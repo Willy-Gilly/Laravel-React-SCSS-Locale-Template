@@ -1,0 +1,5 @@
+{
+    "MainComponent": {
+        "Hello": "Bienvenus dans le composant \"MainComponent\", il vous sert de base à appeler les autres sous composants. Vous pouvez ajouter et modifier des textes traduits dans les fichiers json, puis créer les interfaces nécessaires.."
+    }
+}
