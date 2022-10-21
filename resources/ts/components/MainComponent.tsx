@@ -35,7 +35,7 @@ export default class MainComponent extends React.Component<IMainComponentProps,I
             <div className={styles.main}>
                 <LangOptions changeSelectedLocale={this.setLanguage} selectedLocale={locale} availableLanguages={['fr', 'en']}/>
                 {strings.Hello}
-                <Test/>
+                <Test strings={selectedLanguageFile.Test}/>
             </div>
         );
     }

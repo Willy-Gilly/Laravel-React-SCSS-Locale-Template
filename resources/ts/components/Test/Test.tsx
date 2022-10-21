@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from './COMPONENT.module.scss';
+import styles from './Test.module.scss';
 
 import {
     ITestProps,
@@ -27,11 +27,11 @@ export default class Component extends React.Component<ITestProps,ITestStates> {
 
         } = this.state;
         const {
-
+            strings
         } = this.props;
         return (
-            <div>
-                Le HTML du composant test
+            <div className={styles.myTestComponent}>
+                {strings.Hello}
             </div>
         );
     }

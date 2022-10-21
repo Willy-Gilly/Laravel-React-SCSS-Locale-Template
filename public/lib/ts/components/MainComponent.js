@@ -23,7 +23,7 @@ export default class MainComponent extends React.Component {
         return (React.createElement("div", { className: styles.main },
             React.createElement(LangOptions, { changeSelectedLocale: this.setLanguage, selectedLocale: locale, availableLanguages: ['fr', 'en'] }),
             strings.Hello,
-            React.createElement(Test, null)));
+            React.createElement(Test, { strings: selectedLanguageFile.Test })));
     }
     getLanguage() {
         switch (this.state.locale) {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styles from './Test.module.scss';
 export default class Component extends React.Component {
     constructor(props) {
         super(props);
@@ -11,8 +12,8 @@ export default class Component extends React.Component {
     }
     render() {
         const {} = this.state;
-        const {} = this.props;
-        return (React.createElement("div", null, "Le HTML du composant test"));
+        const { strings } = this.props;
+        return (React.createElement("div", { className: styles.myTestComponent }, strings.Hello));
     }
 }
 //# sourceMappingURL=Test.js.map
