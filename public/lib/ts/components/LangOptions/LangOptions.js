@@ -26,7 +26,7 @@ export default class LangOptions extends React.Component {
             React.createElement("select", { name: "language-picker-select", id: "language-picker-select", onChange: this.changeSelectedLocale, multiple: false, defaultValue: selectedLocale }, availableLanguages.map(locale => (React.createElement("option", { key: "selector_" + locale, value: locale }, localeToString(locale)))))));
     }
     changeSelectedLocale(event) {
-        this.setState({ selectedLocale: event.target.value }, () => this.props.changeSelectedLocale(this.state.selectedLocale));
+        this.setState({ selectedLocale: event.target.value }, () => { this.props.changeSelectedLocale(this.state.selectedLocale); console.log("Changing language to " + this.state.selectedLocale); });
     }
 }
 //# sourceMappingURL=LangOptions.js.map

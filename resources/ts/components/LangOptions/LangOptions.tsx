@@ -50,6 +50,7 @@ export default class LangOptions extends React.Component<ILangOptionsProps,ILang
     }
 
     public changeSelectedLocale(event){
-        this.setState({selectedLocale: event.target.value}, () => this.props.changeSelectedLocale(this.state.selectedLocale))
+        this.setState({selectedLocale: event.target.value}, () => {this.props.changeSelectedLocale(this.state.selectedLocale); console.log("Changing language to "+this.state.selectedLocale)});
+
     }
 }

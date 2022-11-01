@@ -1,46 +1,71 @@
 import * as React from 'react';
 import styles from "./MainComponent.module.scss";
-import {IMainComponentProps, IMainComponentStates} from "./IMainComponent";
+import {APIReturn, Auth, GlobalProps, IMainComponentProps, IMainComponentStates, Profile} from "./IMainComponent";
 import Test from './Test/Test';
 import {IMainLangFile} from "./Lang";
 import LangOptions from "./LangOptions/LangOptions";
-import {Fragment} from "react";
+import axios from "axios";
+import {ILangOptionsProps} from "./LangOptions/ILangOptions";
+import Header from "./Header/Header";
 
-export default class MainComponent extends React.Component<IMainComponentProps,IMainComponentStates> {
+export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     constructor(props) {
         super(props);
         this.stateInitializer();
         this.setLanguage = this.setLanguage.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.register = this.register.bind(this);
     }
-    public componentDidMount() {
 
+    public getAPIHeader() {
+        return {headers: {Authorization: `Bearer ` + this.state.bearerToken}};
+    }
+
+    public componentDidMount() {
+        this.rememberLogin();
     }
 
     private stateInitializer() {
         this.state = {
-            locale: this.initLanguage(),
+            user: undefined,
+            bearerToken: "",
+            auth: false,
+            locale: this.initLanguage()
         };
     }
 
-    public render() : React.ReactElement {
+    public render(): React.ReactElement {
         const {
-            locale
+            locale, auth, user
         } = this.state;
-        const {
-
-        } = this.props;
         const selectedLanguageFile: IMainLangFile = this.getLanguage();
-        const strings = selectedLanguageFile.MainComponent;
+        const strings = selectedLanguageFile.MainComponent; //He is the only one to not have props strings since he is the one who handle it
+
+        const global:GlobalProps = {lang: selectedLanguageFile, user: user, auth: auth, loginF: this.login, logoutF: this.logout, registerF: this.register};
+        const langProps:ILangOptionsProps = {
+            availableLanguages: ['fr', 'en'],
+            selectedLocale: locale,
+            changeSelectedLocale: this.setLanguage,
+        }
+
+        if (!auth) {
+            return (
+                <div className={styles.main}>
+                    Bah non en fait
+                </div>
+            );
+        }
         return (
             <div className={styles.main}>
-                <LangOptions changeSelectedLocale={this.setLanguage} selectedLocale={locale} availableLanguages={['fr', 'en']}/>
+                <Header strings={selectedLanguageFile.Header} langProps={langProps} {...global}/>
                 {strings.Hello}
                 <Test strings={selectedLanguageFile.Test}/>
             </div>
         );
     }
 
-    private getLanguage():IMainLangFile {
+    private getLanguage(): IMainLangFile {
         switch (this.state.locale) {
             case 'en':
                 return this.props.lang.en as IMainLangFile
@@ -49,34 +74,105 @@ export default class MainComponent extends React.Component<IMainComponentProps,I
         }
     }
 
-    public getCookie(cookieName):any{
-        if(document.cookie.indexOf(cookieName+'=') != -1){
-            return document.cookie.split('; ').find((row) => row.startsWith(cookieName+'='))?.split('=')[1];
-        }
-        else{
+    public getCookie(cookieName): any {
+        if (document.cookie.indexOf(cookieName + '=') != -1) {
+            return (document.cookie.split('; ').find((row) => row.startsWith(cookieName + '='))?.split('=')[1] ?? undefined);
+        } else {
             return undefined;
         }
     }
-    public setCookie(cookieName:string, cookieValue:any, expirationDay:number = 10):void{
+
+    public setCookie(cookieName: string, cookieValue: any, expirationDay: number = 10): void {
         const d = new Date();
-        d.setTime(d.getTime() + (expirationDay*24*60*60*1000));
-        let expires = "expires="+ d.toUTCString();
+        d.setTime(d.getTime() + (expirationDay * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
         document.cookie = cookieName + "=" + cookieValue + "; SameSite=Lax;" + expires + ";path=/";
     }
-    public deleteCookie(cookieName:string):void{
+
+    public deleteCookie(cookieName: string): void {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
     }
 
-    private initLanguage():string{
-        if(this.getCookie("currentLocale") != undefined){
+    private initLanguage(): string {
+        if (this.getCookie("currentLocale") != undefined) {
             return this.getCookie("currentLocale");
-        } else{
+        } else {
             this.setCookie("currentLocale", "fr", 30);
             return "fr";
         }
     }
-    public setLanguage(locale:string):void{
-        this.setState({locale: locale}, () => this.setCookie("currentLocale",this.state.locale,30));
+
+    public setLanguage(locale: string): void {
+        this.setState({locale: locale}, () => this.setCookie("currentLocale", this.state.locale, 30));
+    }
+
+    public rememberLogin() {
+        let token = this.getCookie("bearerToken");
+        if (!(token == "undefined" || token == undefined)) {
+            console.log("Authentification Token Found, logging in...");
+            this.setState({bearerToken: this.getCookie("bearerToken"), auth: true}, () => this.getUser());
+        }
+    }
+
+    public login(email:string, password:string) {
+        let obj: APIReturn = undefined;
+        axios.post('api/login', {
+                email: email,
+                password: password
+            }
+        )
+            .then((response) => {
+                obj = response.data;
+                if (obj.success) {
+                    let auth: Auth = obj.data;
+                    this.setCookie("bearerToken", auth.token, 30);
+                    console.log("Logging in...");
+                    this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
+                        this.getUser();
+                    });
+                } else {
+                    console.log("Login Failed.");
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    public logout() {
+        this.deleteCookie("bearerToken");
+        this.setState({bearerToken: "", auth: false, user: undefined})
+        axios.get('api/logout', this.getAPIHeader()).then((response) => {
+            console.log(response.data.data.message)
+        });
+    }
+
+    private getUser() {
+        axios.get('api/user',
+            this.getAPIHeader()).then((response)=> {
+            let res:APIReturn = response.data;
+            let user:Profile = res.data;
+            user.token = this.state.bearerToken;
+            this.setState({user:user});
+        }).catch((error)=> {
+            console.log("Failed to retrieve user from your token.");
+            this.logout();
+        })
+    }
+    public register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string){
+        axios.post('api/register',{
+            firstname:firstname,
+            lastname:lastname,
+            login:login,
+            pseudo:pseudo,
+            email:email,
+            password:password
+        }).then((response) => {
+            let res:Auth = response.data.data;
+            this.setState({bearerToken: res.token},() => this.rememberLogin());
+        }).catch((error) => {
+            console.log("Failed to register");
+        })
     }
 }
 

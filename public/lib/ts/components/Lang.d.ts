@@ -1,3 +1,4 @@
+import { HeaderLang } from "./Header/IHeader";
 export interface Lang {
     fr: IMainLangFile;
     en: IMainLangFile;
@@ -5,6 +6,7 @@ export interface Lang {
 export interface IMainLangFile {
     MainComponent: MainComponentLang;
     Test: TestLang;
+    Header: HeaderLang;
 }
 export interface MainComponentLang {
     Hello: string;

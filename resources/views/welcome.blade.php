@@ -23,7 +23,7 @@
         @vite(['resources/sass/app.scss', 'resources/ts/app.tsx'])
     </head>
     <body class="antialiased">
-        <div id="mainApp">
+        <div id="app">
 
         </div>
     </body>

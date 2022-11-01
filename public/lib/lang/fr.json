@@ -4,5 +4,12 @@
     },
     "Test": {
         "Hello": "Le HTML du composant test"
+    },
+    "Header": {
+        "Nav": {
+            "Login": "Se connecter",
+            "Register": "S'enregistrer",
+            "Logout": "Déconnexion"
+        }
     }
 }
