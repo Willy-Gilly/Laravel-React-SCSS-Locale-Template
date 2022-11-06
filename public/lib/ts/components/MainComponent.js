@@ -23,7 +23,7 @@ export default class MainComponent extends React.Component {
             user: undefined,
             bearerToken: "",
             auth: false,
-            locale: this.initLanguage()
+            locale: this.initLanguage(),
         };
     }
     render() {
@@ -36,9 +36,6 @@ export default class MainComponent extends React.Component {
             selectedLocale: locale,
             changeSelectedLocale: this.setLanguage,
         };
-        if (!auth) {
-            return (React.createElement("div", { className: styles.main }, "Bah non en fait"));
-        }
         return (React.createElement("div", { className: styles.main },
             React.createElement(Header, Object.assign({ strings: selectedLanguageFile.Header, langProps: langProps }, global)),
             strings.Hello,

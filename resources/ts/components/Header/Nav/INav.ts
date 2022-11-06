@@ -7,5 +7,7 @@ export interface INavProps extends GlobalProps{
     langProps: ILangOptionsProps;
 }
 export interface INavStates{
-
+    showingLoginModal:boolean;
+    showingRegisterModal:boolean;
+    showingConfirmationLogoutModal:boolean;
 }

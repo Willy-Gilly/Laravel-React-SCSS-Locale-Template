@@ -3,10 +3,11 @@ import styles from "./MainComponent.module.scss";
 import {APIReturn, Auth, GlobalProps, IMainComponentProps, IMainComponentStates, Profile} from "./IMainComponent";
 import Test from './Test/Test';
 import {IMainLangFile} from "./Lang";
-import LangOptions from "./LangOptions/LangOptions";
 import axios from "axios";
 import {ILangOptionsProps} from "./LangOptions/ILangOptions";
 import Header from "./Header/Header";
+import Modal from './Controls/Modal/Modal';
+import {ModalTheme} from "./Controls/Modal/IModal";
 
 export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     constructor(props) {
@@ -31,7 +32,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             user: undefined,
             bearerToken: "",
             auth: false,
-            locale: this.initLanguage()
+            locale: this.initLanguage(),
         };
     }
 
@@ -47,14 +48,6 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             availableLanguages: ['fr', 'en'],
             selectedLocale: locale,
             changeSelectedLocale: this.setLanguage,
-        }
-
-        if (!auth) {
-            return (
-                <div className={styles.main}>
-                    Bah non en fait
-                </div>
-            );
         }
         return (
             <div className={styles.main}>
