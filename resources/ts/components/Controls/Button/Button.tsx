@@ -18,7 +18,7 @@ export default class Button extends React.Component<IButtonProps,IButtonStates> 
         switch (display){
             default:
             case IButtonDisplay.Default:
-                displayStyle = styles.default;
+                displayStyle = '';
                 break;
             case IButtonDisplay.Confirm:
                 displayStyle = styles.confirmation;
@@ -46,7 +46,7 @@ export default class Button extends React.Component<IButtonProps,IButtonStates> 
         let isLight:boolean = (theme ?? IButtonTheme.Dark) == IButtonTheme.Light;
         return (
             <button className={[styles.button, displayStyle,anim ? styles.animButton : '', isLight ? styles.lightButton : '', classNames?.button].join(' ')}
-                    onClick={onClick} style={style?.button} disabled={disabled ?? false}>
+                    onClick={!(disabled ?? false) ? onClick : () => ''} style={style?.button} disabled={disabled ?? false}>
                 {children ?? ''}
             </button>
         );

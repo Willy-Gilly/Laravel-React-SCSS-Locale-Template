@@ -5,4 +5,5 @@ export interface ILangOptionsProps{
 }
 export interface ILangOptionsStates{
     selectedLocale: string;
+    active:boolean;
 }

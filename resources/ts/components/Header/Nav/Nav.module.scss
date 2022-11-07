@@ -1,5 +1,37 @@
+nav{
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    gap:20px;
+    padding: 15px;
+    border-bottom: #363636 1px solid;
+    position: sticky;
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+.left{
+    justify-self: left;
+    display: inline-flex;
+    align-items: center;
+    gap:20px;
+}
+.middle{
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap:20px;
+}
+.right{
+    justify-self: right;
+    display: inline-flex;
+    align-items: center;
+    gap:20px;
+}
 .modalConfirmContainer{
     display: inline-flex;
     justify-content: center;
     width: 100%;
+}
+.modalConfirmContainer > *{
+    margin: 0 auto;
 }

@@ -1,32 +1,31 @@
 import * as React from 'react';
+import styles from "./LangOptions.module.scss";
 export default class LangOptions extends React.Component {
     constructor(props) {
         super(props);
         this.stateInitializer();
         this.changeSelectedLocale = this.changeSelectedLocale.bind(this);
-    }
-    componentDidMount() {
+        this.makeActive = this.makeActive.bind(this);
     }
     stateInitializer() {
         this.state = {
             selectedLocale: this.props.selectedLocale,
+            active: false,
         };
     }
     render() {
-        const { selectedLocale } = this.state;
+        const { selectedLocale, active } = this.state;
         const { availableLanguages } = this.props;
-        const localeToString = (locale) => {
-            switch (locale) {
-                case 'en': return "English";
-                case 'fr': return "Français";
-                default: return undefined;
-            }
-        };
-        return (React.createElement("div", null,
-            React.createElement("select", { name: "language-picker-select", id: "language-picker-select", onChange: this.changeSelectedLocale, multiple: false, defaultValue: selectedLocale }, availableLanguages.map(locale => (React.createElement("option", { key: "selector_" + locale, value: locale }, localeToString(locale)))))));
+        return (React.createElement("div", { className: styles.languagePicker, onClick: this.makeActive },
+            active || (selectedLocale == "fr" && !active) ? React.createElement("div", { onClick: active ? () => this.changeSelectedLocale('fr') : () => '', className: [styles.language, styles.france].join(' ') }, " ") : '',
+            active || (selectedLocale == "en" && !active) ? React.createElement("div", { onClick: active ? () => this.changeSelectedLocale('en') : () => '', className: [styles.language, styles.english].join(' ') }, " ") : ''));
     }
-    changeSelectedLocale(event) {
-        this.setState({ selectedLocale: event.target.value }, () => { this.props.changeSelectedLocale(this.state.selectedLocale); console.log("Changing language to " + this.state.selectedLocale); });
+    makeActive() {
+        if (!this.state.active)
+            this.setState({ active: true });
+    }
+    changeSelectedLocale(value) {
+        this.setState({ selectedLocale: value, active: false }, () => { this.props.changeSelectedLocale(this.state.selectedLocale); console.log("Changing language to " + this.state.selectedLocale); });
     }
 }
 //# sourceMappingURL=LangOptions.js.map

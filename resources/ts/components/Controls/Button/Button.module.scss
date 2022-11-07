@@ -1,33 +1,74 @@
 .button{
-
+    outline: none;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #2d2d2d;
+    color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-color: #000000;
+    transition: linear 50ms;
+    font-size: 20px;
 }
-.animButton{
-
+.button:hover{
+    background-color: #1d1d1d;
+}
+.button:not(:disabled){
+    cursor:pointer;
+}
+.button:disabled{
+    cursor: not-allowed;
+}
+.animButton:active:not(:disabled){
+    transform: translateY(5%);
 }
 .lightButton{
-
+    color: black;
+    background-color: antiquewhite;
 }
-.default{
-
+.lightButton:hover{
+    background-color: #ffffff;
 }
 .information{
-
+    color: #a68900;
+    border-color: #786400;
 }
 .confirmation{
-
+    color: #009d0a;
+    border-color: #005f07;
 }
 .error{
-
+    color: #91100e;
+    border-color: #6c0705;
 }
 .primary{
-
+    background-color: #2b4e91;
+    border-color: #193878;
+    color: antiquewhite;
+}
+.primary:hover{
+    background-color: #1f4582;
 }
 .primary.information{
-
+    background-color: #a68900;
+    color: antiquewhite;
+}
+.primary.information:hover{
+    background-color: #937a01;
 }
 .primary.confirmation{
-
+    background-color: #009d0a;
+    color: antiquewhite;
+}
+.primary.confirmation:hover{
+    background-color: #007f09;
 }
 .primary.error{
-
+    background-color: #91100e;
+    color: antiquewhite;
+}
+.primary.error:hover{
+    background-color: #7d0b09;
 }

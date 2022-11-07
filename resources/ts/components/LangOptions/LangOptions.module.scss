@@ -1,0 +1,23 @@
+.france{
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Flag_of_France_%28lighter_variant%29.svg/1280px-Flag_of_France_%28lighter_variant%29.svg.png");
+}
+.english{
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Great_Britain_%281707%E2%80%931800%29.svg/1920px-Flag_of_Great_Britain_%281707%E2%80%931800%29.svg.png");
+}
+.languagePicker{
+    display:inline-flex;
+    gap:4px;
+    align-items: center;
+    height: 100%;
+}
+.language{
+    height:42px;
+    width: 60px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: transparent 1px solid;
+    cursor: pointer;
+}
+.language:hover{
+    border-color: antiquewhite;
+}
