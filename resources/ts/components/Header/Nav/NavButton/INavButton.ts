@@ -1,4 +1,4 @@
-import {IButtonClassNames, IButtonStyle, IButtonTheme} from "../Button/IButton";
+import {IButtonClassNames, IButtonStyle, IButtonTheme} from "../../../Controls/Button/IButton";
 import React from "react";
 
 export interface INavButtonProps{

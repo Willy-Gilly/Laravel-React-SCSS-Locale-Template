@@ -1,6 +1,6 @@
 import {NavLang} from "../IHeader";
 import {GlobalProps} from "../../IMainComponent";
-import {ILangOptionsProps} from "../../LangOptions/ILangOptions";
+import {ILangOptionsProps} from "../../Controls/LangOptions/ILangOptions";
 
 export interface INavProps extends GlobalProps{
     strings:NavLang;

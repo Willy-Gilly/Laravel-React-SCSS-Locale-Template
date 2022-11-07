@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styles from './Nav.module.scss'
 import {INavProps, INavStates} from './INav';
-import LangOptions from "../../LangOptions/LangOptions";
+import LangOptions from "../../Controls/LangOptions/LangOptions";
 import Modal from "../../Controls/Modal/Modal";
 import Button from "../../Controls/Button/Button";
 import {IButtonDisplay, IButtonTheme} from "../../Controls/Button/IButton";
-import NavButton from "../../Controls/NavButton/NavButton";
+import NavButton from "./NavButton/NavButton";
 
 export default class Nav extends React.Component<INavProps,INavStates> {
     constructor(props) {
@@ -15,10 +15,6 @@ export default class Nav extends React.Component<INavProps,INavStates> {
         this.logoutViewState = this.logoutViewState.bind(this);
         this.registerViewState = this.registerViewState.bind(this);
     }
-    public componentDidMount() {
-
-    }
-
     private stateInitializer() {
         this.state = {
             showingLoginModal: false,
@@ -26,7 +22,6 @@ export default class Nav extends React.Component<INavProps,INavStates> {
             showingConfirmationLogoutModal: false,
         };
     }
-
     public render() : React.ReactElement {
         const {
             showingLoginModal, showingRegisterModal, showingConfirmationLogoutModal
@@ -39,7 +34,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                 <nav>
                     <div className={styles.left}>
                         <LangOptions {...langProps}/>
-                        <p> {user.pseudo} </p>
+                        <p> {user?.pseudo} </p>
                     </div>
                     <div className={styles.middle}>
 

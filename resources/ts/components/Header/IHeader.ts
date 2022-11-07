@@ -1,5 +1,5 @@
 import {GlobalProps} from "../IMainComponent";
-import {ILangOptionsProps} from "../LangOptions/ILangOptions";
+import {ILangOptionsProps} from "../Controls/LangOptions/ILangOptions";
 
 export interface IHeaderProps extends GlobalProps{
     strings:HeaderLang;

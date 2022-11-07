@@ -4,7 +4,7 @@ import {APIReturn, Auth, GlobalProps, IMainComponentProps, IMainComponentStates,
 import Test from './Test/Test';
 import {IMainLangFile} from "./Lang";
 import axios from "axios";
-import {ILangOptionsProps} from "./LangOptions/ILangOptions";
+import {ILangOptionsProps} from "./Controls/LangOptions/ILangOptions";
 import Header from "./Header/Header";
 import Modal from './Controls/Modal/Modal';
 import {ModalTheme} from "./Controls/Modal/IModal";
