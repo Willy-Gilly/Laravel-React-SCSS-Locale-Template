@@ -61,11 +61,11 @@ export default class MainComponent extends React.Component {
     setCookie(cookieName, cookieValue, expirationDay = 10) {
         const d = new Date();
         d.setTime(d.getTime() + (expirationDay * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + d.toUTCString();
-        document.cookie = cookieName + "=" + cookieValue + "; SameSite=Lax;" + expires + ";path=/";
+        let expires = ";expires=" + d.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";SameSite=Lax" + expires + ";path=/";
     }
     deleteCookie(cookieName) {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;SameSite=Lax; path=/";
     }
     initLanguage() {
         if (this.getCookie("currentLocale") != undefined) {
@@ -86,10 +86,10 @@ export default class MainComponent extends React.Component {
             this.setState({ bearerToken: this.getCookie("bearerToken"), auth: true }, () => this.getUser());
         }
     }
-    login(email, password) {
+    login(emailOrLogin, password) {
         let obj = undefined;
         axios.post('api/login', {
-            email: email,
+            emailOrLogin: emailOrLogin,
             password: password
         })
             .then((response) => {
@@ -129,6 +129,7 @@ export default class MainComponent extends React.Component {
         });
     }
     register(firstname, lastname, login, pseudo, email, password) {
+        let obj = undefined;
         axios.post('api/register', {
             firstname: firstname,
             lastname: lastname,
@@ -137,8 +138,18 @@ export default class MainComponent extends React.Component {
             email: email,
             password: password
         }).then((response) => {
-            let res = response.data.data;
-            this.setState({ bearerToken: res.token }, () => this.rememberLogin());
+            obj = response.data;
+            if (obj.success) {
+                let auth = obj.data;
+                this.setCookie("bearerToken", auth.token, 30);
+                console.log("Registering...");
+                this.setState({ bearerToken: auth.token, auth: auth.token != "" }, () => {
+                    this.getUser();
+                });
+            }
+            else {
+                console.log("Registering Failed.");
+            }
         }).catch((error) => {
             console.log("Failed to register");
         });

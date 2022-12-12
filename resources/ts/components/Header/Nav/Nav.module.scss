@@ -35,3 +35,14 @@ nav{
 .modalConfirmContainer > *{
     margin: 0 auto;
 }
+.modalLoginContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    gap: 15px;
+    min-width: 300px;
+}
+.modalLoginContainer > div > *{
+    width: 100%;
+}

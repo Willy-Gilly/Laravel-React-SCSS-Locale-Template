@@ -1,0 +1,53 @@
+.textBox{
+    outline: none;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #2d2d2d;
+    color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-color: #000000;
+    min-width: fit-content;
+}
+.textBox:focus{
+    outline: none;
+    background-color: #1d1d1d;
+}
+.textBox:not(:disabled){
+    cursor:text;
+}
+.textBox:disabled{
+    cursor: not-allowed;
+}
+.animTextBox:not(:disabled){
+    transition: linear 50ms;
+}
+.lightTextBox{
+    color: black;
+    background-color: antiquewhite;
+}
+.lightTextBox:focus{
+    background-color: #ffffff;
+}
+.validationStyle:valid{
+    border-color: #005f07;
+}
+.validationStyle:invalid{
+    border-color: #6c0705;
+}
+.primary.confirmation{
+    background-color: #009d0a;
+    color: antiquewhite;
+}
+.primary.confirmation:focus{
+    background-color: #007f09;
+}
+.primary.error{
+    background-color: #91100e;
+    color: antiquewhite;
+}
+.primary.error:focus{
+    background-color: #7d0b09;
+}

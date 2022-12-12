@@ -17,7 +17,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
     private initLanguage;
     setLanguage(locale: string): void;
     rememberLogin(): void;
-    login(email: string, password: string): void;
+    login(emailOrLogin: string, password: string): void;
     logout(): void;
     private getUser;
     register(firstname: string, lastname: string, login: string, pseudo: string, email: string, password: string): void;

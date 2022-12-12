@@ -9,7 +9,18 @@
         "Nav": {
             "Login": "Login",
             "Register": "Register",
-            "Logout": "Logout"
+            "Logout": "Logout",
+            "LogoutHeader": "Would you like to disconnect ?",
+            "LoginInput": "Login or Email",
+            "PasswordInput": "Password",
+            "Confirm": "Confirm",
+            "Cancel": "Cancel",
+            "FirstName": "Prénom",
+            "LastName": "Nom",
+            "LoginF": "Identifiant",
+            "Pseudo": "Pseudo",
+            "Email": "Email",
+            "RegexPassword": "Must Contain : One lowercase, one uppercase, one number and one special character minimum for a total length of 8 minimum"
         }
     }
 }

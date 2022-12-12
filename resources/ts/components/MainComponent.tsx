@@ -6,8 +6,6 @@ import {IMainLangFile} from "./Lang";
 import axios from "axios";
 import {ILangOptionsProps} from "./Controls/LangOptions/ILangOptions";
 import Header from "./Header/Header";
-import Modal from './Controls/Modal/Modal';
-import {ModalTheme} from "./Controls/Modal/IModal";
 
 export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     constructor(props) {
@@ -18,15 +16,12 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         this.logout = this.logout.bind(this);
         this.register = this.register.bind(this);
     }
-
     public getAPIHeader() {
         return {headers: {Authorization: `Bearer ` + this.state.bearerToken}};
     }
-
     public componentDidMount() {
         this.rememberLogin();
     }
-
     private stateInitializer() {
         this.state = {
             user: undefined,
@@ -35,7 +30,6 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             locale: this.initLanguage(),
         };
     }
-
     public render(): React.ReactElement {
         const {
             locale, auth, user
@@ -57,7 +51,6 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             </div>
         );
     }
-
     private getLanguage(): IMainLangFile {
         switch (this.state.locale) {
             case 'en':
@@ -66,7 +59,6 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
                 return this.props.lang.fr as IMainLangFile
         }
     }
-
     public getCookie(cookieName): any {
         if (document.cookie.indexOf(cookieName + '=') != -1) {
             return (document.cookie.split('; ').find((row) => row.startsWith(cookieName + '='))?.split('=')[1] ?? undefined);
@@ -74,18 +66,15 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             return undefined;
         }
     }
-
     public setCookie(cookieName: string, cookieValue: any, expirationDay: number = 10): void {
         const d = new Date();
         d.setTime(d.getTime() + (expirationDay * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + d.toUTCString();
-        document.cookie = cookieName + "=" + cookieValue + "; SameSite=Lax;" + expires + ";path=/";
+        let expires = ";expires=" + d.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";SameSite=Lax" + expires + ";path=/";
     }
-
     public deleteCookie(cookieName: string): void {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;SameSite=Lax; path=/";
     }
-
     private initLanguage(): string {
         if (this.getCookie("currentLocale") != undefined) {
             return this.getCookie("currentLocale");
@@ -94,23 +83,20 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             return "fr";
         }
     }
-
     public setLanguage(locale: string): void {
         this.setState({locale: locale}, () => this.setCookie("currentLocale", this.state.locale, 30));
     }
-
-    public rememberLogin() {
+    public rememberLogin():void {
         let token = this.getCookie("bearerToken");
         if (!(token == "undefined" || token == undefined)) {
             console.log("Authentification Token Found, logging in...");
             this.setState({bearerToken: this.getCookie("bearerToken"), auth: true}, () => this.getUser());
         }
     }
-
-    public login(email:string, password:string) {
+    public login(emailOrLogin:string, password:string): void {
         let obj: APIReturn = undefined;
         axios.post('api/login', {
-                email: email,
+                emailOrLogin: emailOrLogin,
                 password: password
             }
         )
@@ -131,8 +117,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
                 console.log(error);
             });
     }
-
-    public logout() {
+    public logout():void {
         this.deleteCookie("bearerToken");
         this.setState({bearerToken: "", auth: false, user: undefined})
         axios.get('api/logout', this.getAPIHeader()).then((response) => {
@@ -140,7 +125,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         });
     }
 
-    private getUser() {
+    private getUser():void {
         axios.get('api/user',
             this.getAPIHeader()).then((response)=> {
             let res:APIReturn = response.data;
@@ -152,7 +137,8 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             this.logout();
         })
     }
-    public register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string){
+    public register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string):void{
+        let obj: APIReturn = undefined;
         axios.post('api/register',{
             firstname:firstname,
             lastname:lastname,
@@ -161,8 +147,17 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             email:email,
             password:password
         }).then((response) => {
-            let res:Auth = response.data.data;
-            this.setState({bearerToken: res.token},() => this.rememberLogin());
+            obj = response.data;
+            if (obj.success) {
+                let auth: Auth = obj.data;
+                this.setCookie("bearerToken", auth.token, 30);
+                console.log("Registering...");
+                this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
+                    this.getUser();
+                });
+            } else {
+                console.log("Registering Failed.");
+            }
         }).catch((error) => {
             console.log("Failed to register");
         })

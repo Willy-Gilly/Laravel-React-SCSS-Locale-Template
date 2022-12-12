@@ -9,7 +9,18 @@
         "Nav": {
             "Login": "Se connecter",
             "Register": "S'enregistrer",
-            "Logout": "Déconnexion"
+            "Logout": "Déconnexion",
+            "LogoutHeader": "Souhaitez-vous vous déconnecter ?",
+            "LoginInput": "Login ou Email",
+            "PasswordInput": "Mot de passe",
+            "Confirm": "Confirmer",
+            "Cancel": "Annuler",
+            "FirstName": "Prénom",
+            "LastName": "Nom",
+            "LoginF": "Identifiant",
+            "Pseudo": "Pseudo",
+            "Email": "Email",
+            "RegexPassword": "Doit contenir : Une minuscule, une majuscule, un chiffre et un caractère spécial minimum pour une longueur totale de 8 minimum"
         }
     }
 }

@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "concurrently \"npm run vite\" \"npm run tsc\"",
+        "serve": "concurrently \"npm run vite\" \"npm run tsc\"",
         "build": "vite build",
         "vite": "vite --clearScreen false",
         "tsc": "tsc -w --preserveWatchOutput"

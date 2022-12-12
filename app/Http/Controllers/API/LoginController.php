@@ -29,7 +29,7 @@ class LoginController extends BaseAPIController
             'password' => ['required', 'string', 'min:8'],
         ]);
         if($validator->fails()){
-            return $this->sendError('Validation Error.', [$validator->errors()]);
+            return $this->sendError('Validation Error.', [$validator->errors()],403);
         }
         $user = User::create([
             'firstname' => $request->get('firstname'),
@@ -52,14 +52,14 @@ class LoginController extends BaseAPIController
      */
     public function login(Request $request): JsonResponse
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::attempt(['email' => $request->emailOrLogin, 'password' => $request->password]) || Auth::attempt(['login' => $request->emailOrLogin, 'password' => $request->password])){
             $user = Auth::user();
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['name'] = $user->pseudo;
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'],403);
         }
     }
 
