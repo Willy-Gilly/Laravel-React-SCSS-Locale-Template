@@ -11,14 +11,14 @@
     width: 70%;
     gap: 10px;
 }
-.controlDisplayList > div{
+.main{
     display: flex;
     flex-direction: column;
     background-color: rgba(250, 235, 215, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.51);
     padding: 12px;
 }
-.controlDisplayList > div > div{
+.main > div{
     display: grid;
     grid-template-columns: repeat(3, auto);
     padding: 15px;

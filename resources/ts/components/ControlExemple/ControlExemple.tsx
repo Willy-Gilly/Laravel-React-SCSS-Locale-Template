@@ -3,6 +3,8 @@ import styles from './ControlExemple.module.scss';
 
 import {IControlExempleProps, IControlExempleStates, SubPage} from './IControlExemple';
 import Link from "../Controls/Link/Link";
+import TextBox from "../Controls/TextBox/TextBox";
+import TextBoxExemple from "./TextBoxExemple/TextBoxExemple";
 
 
 export default class ControlExemple extends React.Component<IControlExempleProps,IControlExempleStates> {
@@ -17,7 +19,7 @@ export default class ControlExemple extends React.Component<IControlExempleProps
 
     private stateInitializer() {
         this.state = {
-            page: SubPage.Base
+            page: SubPage.TextBox
         };
     }
 
@@ -32,7 +34,7 @@ export default class ControlExemple extends React.Component<IControlExempleProps
             switch (page){
                 case SubPage.Base: return (
                     <>
-                        <div>
+                        <div className={styles.main}>
                             <h2>Basic Inputs</h2>
                             <div>
                                 <Link onClick={undefined} disabled={true}>CheckBox</Link>
@@ -48,7 +50,7 @@ export default class ControlExemple extends React.Component<IControlExempleProps
                                 <Link onClick={undefined} disabled={true}>TimePicker</Link>
                             </div>
                         </div>
-                        <div>
+                        <div className={styles.main}>
                             <h2>User Interactions</h2>
                             <div>
                                 <Link onClick={() => this.changePage(SubPage.Button)}>Button</Link>
@@ -57,7 +59,7 @@ export default class ControlExemple extends React.Component<IControlExempleProps
                                 <Link onClick={undefined} disabled={true}>ToolTip</Link>
                             </div>
                         </div>
-                        <div>
+                        <div className={styles.main}>
                             <h2>Display</h2>
                             <div>
                                 <Link onClick={undefined} disabled={true}>Label</Link>
@@ -65,19 +67,20 @@ export default class ControlExemple extends React.Component<IControlExempleProps
                                 <Link onClick={() => this.changePage(SubPage.NavBar)}>NavBar</Link>
                                 <Link onClick={() => this.changePage(SubPage.Modal)}>Modal</Link>
                                 <Link onClick={undefined} disabled={true}>Panel</Link>
+                                <Link onClick={undefined} disabled={true}>Card</Link>
                                 <Link onClick={undefined} disabled={true}>Notification</Link>
                                 <Link onClick={undefined} disabled={true}>MessageBar</Link>
                                 <Link onClick={undefined} disabled={true}>Spinner</Link>
                             </div>
                         </div>
-                        <div>
+                        <div className={styles.main}>
                             <h2>List</h2>
                             <div>
                                 <Link onClick={undefined} disabled={true}>Table</Link>
                                 <Link onClick={undefined} disabled={true}>List</Link>
                             </div>
                         </div>
-                        <div>
+                        <div className={styles.main}>
                             <h2>Pickers</h2>
                             <div>
                                 <Link onClick={undefined} disabled={true}>ItemPicker</Link>
@@ -88,7 +91,12 @@ export default class ControlExemple extends React.Component<IControlExempleProps
                 );
                 case SubPage.TextBox : return (
                   <>
-
+                    <div>
+                        <h2>TextBox</h2>
+                        <div>
+                            <TextBoxExemple/>
+                        </div>
+                    </div>
                   </>
                 );
             }
@@ -96,12 +104,12 @@ export default class ControlExemple extends React.Component<IControlExempleProps
 
         return (
             <div className={styles.myControlExempleComponent}>
-                <div className={styles.leftPanel}>
+                <aside className={styles.leftPanel}>
                     left panel
-                </div>
-                <div className={styles.controlDisplayList}>
+                </aside>
+                <main className={styles.controlDisplayList}>
                     {subpage()}
-                </div>
+                </main>
             </div>
         );
     }

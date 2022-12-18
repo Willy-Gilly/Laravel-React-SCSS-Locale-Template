@@ -31,6 +31,7 @@ export enum SubPage{
     NavBar,
     Modal,
     Panel,
+    Card,
     Notification,
     MessageBar,
     Spinner,
