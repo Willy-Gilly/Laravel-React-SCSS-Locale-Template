@@ -1,13 +1,14 @@
 import {GlobalProps} from "../IMainComponent";
 import {ILangOptionsProps} from "../Controls/LangOptions/ILangOptions";
+import React from "react";
 
 export interface IHeaderProps extends GlobalProps{
     strings:HeaderLang;
     langProps:ILangOptionsProps;
+    fixed?:boolean;
+    children?: React.ReactNode | React.ReactNode[];
 }
-export interface IHeaderStates{
-
-}
+export interface IHeaderStates{}
 
 export interface HeaderLang{
     Nav:NavLang;

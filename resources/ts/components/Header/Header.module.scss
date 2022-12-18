@@ -1,0 +1,13 @@
+.header{
+    width: 100%;
+    top: 0;
+}
+.fixed + * {
+    padding-top: 90px;
+}
+.headerRelative{
+    position: relative;
+}
+.fixed{
+    position: fixed;
+}

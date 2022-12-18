@@ -1,0 +1,26 @@
+.myControlExempleComponent{
+    display: flex;
+    flex-direction: row;
+}
+.leftPanel{
+    width: 30%;
+}
+.controlDisplayList{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    gap: 10px;
+}
+.controlDisplayList > div{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(250, 235, 215, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.51);
+    padding: 12px;
+}
+.controlDisplayList > div > div{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    padding: 15px;
+    row-gap:5px;
+}

@@ -12,11 +12,11 @@ export default class Component extends React.Component<ITestProps,ITestStates> {
         super(props);
         this.stateInitializer();
     }
-    public componentDidMount() {
+    public componentDidMount():void {
 
     }
 
-    private stateInitializer() {
+    private stateInitializer():void {
         this.state = {
 
         };
@@ -27,12 +27,12 @@ export default class Component extends React.Component<ITestProps,ITestStates> {
 
         } = this.state;
         const {
-            strings
+
         } = this.props;
         return (
-            <div className={styles.myTestComponent}>
-                {strings.Hello}
-            </div>
+            <>
+
+            </>
         );
     }
 }

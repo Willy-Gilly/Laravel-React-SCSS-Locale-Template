@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 
 export interface IButtonProps{
-    children?: React.ReactChild | React.ReactChild[];//Nothing will be displayed in the body otherwise
+    children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise
     onClick: () => any;//Function called on click
     disabled?: boolean;//Define if the button should be disabled
     disableAnimation?:boolean;//Define if animations should be enabled

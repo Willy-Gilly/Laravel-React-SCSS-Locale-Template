@@ -8,6 +8,7 @@ export interface IMainComponentStates{
     auth:boolean;
     bearerToken:string;
     user:Profile;
+    page:Page;
 }
 export interface Auth{
     token:string;
@@ -35,4 +36,9 @@ export interface GlobalProps{
     loginF: (credential:string, password:string) => void;
     logoutF: () => void;
     registerF: (firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string) => void;
+    changePage:(page:Page) => void;
+}
+export enum Page{
+    Main,
+    ControlExemple,
 }

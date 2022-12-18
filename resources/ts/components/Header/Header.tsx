@@ -12,26 +12,14 @@ export default class Header extends React.Component<IHeaderProps,IHeaderStates> 
         super(props);
         this.stateInitializer();
     }
-    public componentDidMount() {
-
-    }
-
-    private stateInitializer() {
-        this.state = {
-
-        };
-    }
-
+    private stateInitializer() {this.state = {};}
     public render() : React.ReactElement {
         const {
-
-        } = this.state;
-        const {
-            strings, langProps
+            strings, langProps, children, fixed
         } = this.props;
         return (
-            <header>
-                <Nav {...this.props} {...langProps} strings={strings.Nav}/>
+            <header className={[styles.header, fixed ?? false ? styles.fixed : styles.headerRelative].join(' ')}>
+                <Nav {...this.props} {...langProps} strings={strings.Nav}> {children} </Nav>
             </header>
         );
     }

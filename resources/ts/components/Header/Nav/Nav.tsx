@@ -27,10 +27,10 @@ export default class Nav extends React.Component<INavProps,INavStates> {
         this.handlePseudoChange = this.handlePseudoChange.bind(this);
     }
 
-    private regexStringEmail:string = "^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$";
+    private regexStringEmail:string = "^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$";
     private regexStringLogin:string = "^([a-zA-Z0-9-_]){3,20}$";//use the same for pseudo
     private regexStringPassword:string = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$";
-    private regexStringNames:string = "^[a-zA-Zéèêëîïûü.\\- ]{3,}$"
+    private regexStringNames:string = "^[a-zA-Zçéèêëàîïûü.\\- ]{2,}$"
 
     private stateInitializer() {
         this.state = {
@@ -49,20 +49,20 @@ export default class Nav extends React.Component<INavProps,INavStates> {
             firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput
         } = this.state;
         const {
-            strings, auth, langProps, user
+            strings, auth, langProps, user, children
         } = this.props;
 
         const buttonStyle:IButtonStyle = {button: {width: "70%", alignSelf:"center"}};
 
         if(auth){
-            return (<section>
+            return (<>
                 <nav>
                     <div className={styles.left}>
                         <LangOptions {...langProps}/>
-                        <p> {user?.pseudo} </p>
+                        {user ? <p>{user.pseudo}</p> : ''}
                     </div>
                     <div className={styles.middle}>
-
+                        {children}
                     </div>
                     <div className={styles.right}>
                         <NavButton onClick={this.logoutViewState}>{strings.Logout}</NavButton>
@@ -74,15 +74,15 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                         <Button onClick={() => {this.props.logoutF()}} display={IButtonDisplay.Confirm}> {strings.Confirm} </Button>
                     </div>
                 </Modal>
-            </section>);
+            </>);
         }
-        return (<section>
+        return (<>
             <nav>
                 <div className={styles.left}>
                     <LangOptions {...langProps}/>
                 </div>
                 <div className={styles.middle}>
-
+                    {children}
                 </div>
                 <div className={styles.right}>
                     <NavButton onClick={this.loginViewState}>{strings.Login}</NavButton>
@@ -129,7 +129,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                     }} style={buttonStyle} disabled={!canRegister}> {strings.Confirm} </Button>
                 </div>
             </Modal>
-        </section>);
+        </>);
     }
     //region Login
     public handleKeyPressLogin(event:React.KeyboardEvent){
@@ -175,7 +175,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                 && regexLogin.test(this.state.pseudoInput)
                 && regexName.test(this.state.lastNameInput)
                 && regexName.test(this.state.firstNameInput)
-        }, () => console.log("can register : ",this.state.canRegister));
+        });
     }
     //endregion register
     //region modalOpen

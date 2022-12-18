@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styles from "./MainComponent.module.scss";
-import {APIReturn, Auth, GlobalProps, IMainComponentProps, IMainComponentStates, Profile} from "./IMainComponent";
+import {APIReturn, Auth, GlobalProps, IMainComponentProps, IMainComponentStates, Page, Profile} from "./IMainComponent";
 import Test from './Test/Test';
 import {IMainLangFile} from "./Lang";
 import axios from "axios";
 import {ILangOptionsProps} from "./Controls/LangOptions/ILangOptions";
 import Header from "./Header/Header";
+import ControlExemple from "./ControlExemple/ControlExemple";
+import Button from "./Controls/Button/Button";
+import NavButton from "./Header/Nav/NavButton/NavButton";
 
 export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     constructor(props) {
@@ -15,6 +18,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.register = this.register.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
     public getAPIHeader() {
         return {headers: {Authorization: `Bearer ` + this.state.bearerToken}};
@@ -28,28 +32,40 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             bearerToken: "",
             auth: false,
             locale: this.initLanguage(),
+            page: Page.ControlExemple
         };
     }
     public render(): React.ReactElement {
         const {
-            locale, auth, user
+            locale, auth, user, page
         } = this.state;
         const selectedLanguageFile: IMainLangFile = this.getLanguage();
         const strings = selectedLanguageFile.MainComponent; //He is the only one to not have props strings since he is the one who handle it
 
-        const global:GlobalProps = {lang: selectedLanguageFile, user: user, auth: auth, loginF: this.login, logoutF: this.logout, registerF: this.register};
+        const global:GlobalProps = {lang: selectedLanguageFile, user: user, auth: auth, loginF: this.login, logoutF: this.logout, registerF: this.register, changePage: this.changePage};
         const langProps:ILangOptionsProps = {
             availableLanguages: ['fr', 'en'],
             selectedLocale: locale,
             changeSelectedLocale: this.setLanguage,
         }
-        return (
-            <div className={styles.main}>
-                <Header strings={selectedLanguageFile.Header} langProps={langProps} {...global}/>
-                {strings.Hello}
-                <Test strings={selectedLanguageFile.Test}/>
-            </div>
-        );
+        switch (page){
+            default: return (
+                <div className={styles.main}>
+                    <Header strings={selectedLanguageFile.Header} langProps={langProps} fixed={true} {...global}/>
+                    <p>{strings.Hello}</p>
+                    <Button onClick={() => this.changePage(Page.ControlExemple)}>Control Exemple</Button>
+                </div>
+            );
+            case Page.ControlExemple: return (
+                <div className={styles.main}>
+                    <Header strings={selectedLanguageFile.Header} langProps={langProps} fixed={true} {...global}>
+                        <NavButton onClick={() => this.changePage(Page.Main)}> Return to main page </NavButton>
+                    </Header>
+                    <ControlExemple langProps={langProps} {...global}/>
+                </div>
+            );
+        }
+
     }
     private getLanguage(): IMainLangFile {
         switch (this.state.locale) {
@@ -93,29 +109,27 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             this.setState({bearerToken: this.getCookie("bearerToken"), auth: true}, () => this.getUser());
         }
     }
-    public login(emailOrLogin:string, password:string): void {
+
+    public login(emailOrLogin: string, password: string): void {
         let obj: APIReturn = undefined;
         axios.post('api/login', {
                 emailOrLogin: emailOrLogin,
                 password: password
+        }).then((response) => {
+            obj = response.data;
+            if (obj.success) {
+                let auth: Auth = obj.data;
+                this.setCookie("bearerToken", auth.token, 30);
+                console.log("Logging in...");
+                this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
+                    this.getUser();
+                });
+            } else {
+                console.log("Login Failed.");
             }
-        )
-            .then((response) => {
-                obj = response.data;
-                if (obj.success) {
-                    let auth: Auth = obj.data;
-                    this.setCookie("bearerToken", auth.token, 30);
-                    console.log("Logging in...");
-                    this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
-                        this.getUser();
-                    });
-                } else {
-                    console.log("Login Failed.");
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        }).catch(function (error) {
+            console.log(error);}
+        );
     }
     public logout():void {
         this.deleteCookie("bearerToken");
@@ -161,6 +175,9 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         }).catch((error) => {
             console.log("Failed to register");
         })
+    }
+    public changePage(page:Page){
+        this.setState({page:page});
     }
 }
 

@@ -3,7 +3,7 @@ import React from "react";
 export interface IModalProps{
     showing:boolean;//Must be true to show
     close:() => void;//The method called to hide the component
-    children?: React.ReactChild | React.ReactChild[];//Nothing will be displayed in the body otherwise
+    children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise
     hasHeader?: boolean;//Default is true - Displays header
     headerTitle?:string;//Displayed only if header
     hideOnEmptyClick?:boolean;//Default is true

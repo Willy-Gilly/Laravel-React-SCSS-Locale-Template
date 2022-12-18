@@ -1,0 +1,11 @@
+.link{
+    width: fit-content;
+}
+.link[aria-disabled=false]:hover{
+    text-decoration: underline;
+    transition: 2s;
+    cursor: pointer;
+}
+.link[aria-disabled=true]:hover{
+    cursor: default;
+}
