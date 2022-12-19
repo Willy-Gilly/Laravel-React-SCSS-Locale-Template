@@ -37,6 +37,12 @@
 .validationStyle:invalid{
     border-color: #6c0705;
 }
+.validationStyle.lightTextBox:valid{
+    border-color: #0db919;
+}
+.validationStyle.lightTextBox:invalid{
+    border-color: #cc110e;
+}
 .primary.confirmation{
     background-color: #009d0a;
     color: antiquewhite;

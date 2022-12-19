@@ -16,9 +16,7 @@ export interface ITextBoxProps{
     onKeyPress?: (event:React.KeyboardEvent) => void;
     required?: boolean;//Define if Required
 }
-export interface ITextBoxStates{
-
-}
+export interface ITextBoxStates{}
 export enum ITextBoxTheme{
     Dark,
     Light

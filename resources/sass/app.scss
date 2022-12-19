@@ -4,3 +4,32 @@
 // Variables
 @import 'variables';
 
+.hljs {
+    display: block; padding: 1em;
+    background: #500; color: #B99;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #400 #700 #700 #400;
+}
+
+.hljs-keyword {
+    color: darkred;
+}
+.hljs-title{
+    color: lightskyblue;
+}
+.hljs-name {
+    color: #c45b79;
+}
+.hljs-attr{
+    color: #3d9037;
+}
+.hljs-string{
+    color: #a68900;
+}
+.hljs-literal {
+    color: #F77;
+}
+.hljs-comment {
+    color: #938a8a;
+}

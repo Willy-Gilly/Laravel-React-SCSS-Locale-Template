@@ -4,8 +4,9 @@ import {ITextBoxExempleProps, ITextBoxExempleStates} from './ITextBoxExemple';
 import TextBox from "../../Controls/TextBox/TextBox";
 import {ITextBoxTheme} from "../../Controls/TextBox/ITextBox";
 import Card from "../../Controls/Card/Card";
-import {ICardPosition} from "../../Controls/Card/ICard";
-
+import {ICardTheme} from "../../Controls/Card/ICard";
+import Code from "../../Controls/Code/Code";
+import {ICodeLanguage} from "../../Controls/Code/ICode";
 
 export default class TextBoxExemple extends React.Component<ITextBoxExempleProps,ITextBoxExempleStates> {
     constructor(props) {
@@ -18,6 +19,8 @@ export default class TextBoxExemple extends React.Component<ITextBoxExempleProps
             baseTextBoxValue:'',
         };
     }
+    public componentDidMount(){
+    }
 
     public render() : React.ReactElement {
         const {
@@ -25,7 +28,7 @@ export default class TextBoxExemple extends React.Component<ITextBoxExempleProps
         } = this.state;
         return (
             <>
-                <Card headerContent={"Default Appearance"} position={ICardPosition.center}>
+                <Card headerContent={"Default Appearance"} collapsable={true}>
                     <div>
                         <label>Base</label>
                         <TextBox onChange={this.onChangeBaseTextBox} value={baseTextBoxValue}/>
@@ -51,8 +54,7 @@ export default class TextBoxExemple extends React.Component<ITextBoxExempleProps
                         <TextBox onChange={this.onChangeBaseTextBox} value={baseTextBoxValue} regex={"^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$"} required={true}/>
                     </div>
                 </Card>
-                <div>
-                    <h2>Light Theme</h2>
+                <Card headerContent={"Light Theme"} theme={ICardTheme.Light} collapsable={true} collapsed={true}>
                     <div>
                         <label>Base</label>
                         <TextBox theme={ITextBoxTheme.Light} onChange={this.onChangeBaseTextBox} value={baseTextBoxValue}/>
@@ -77,7 +79,22 @@ export default class TextBoxExemple extends React.Component<ITextBoxExempleProps
                         <label>Required + Regex (here a valid email)</label>
                         <TextBox theme={ITextBoxTheme.Light} onChange={this.onChangeBaseTextBox} value={baseTextBoxValue} regex={"^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$"} required={true}/>
                     </div>
-                </div>
+                </Card>
+                <Card headerContent={"How to use ?"} collapsable={true}>
+                    <Card headerContent={"Base usage"}>
+                        <Code code={`<TextBox onChange={this.onChangeBaseTextBox} value={baseTextBoxValue}/>`} language={ICodeLanguage.HTML}/>
+                        <p>You must have a function to update your state value in onChange, and a value, both are the required props</p>
+                    </Card>
+                    <Card headerContent={"Light Theme"}>
+                        <Code code={`<TextBox theme={ITextBoxTheme.Light} onChange={this.onChangeBaseTextBox} value={baseTextBoxValue}/>`} language={ICodeLanguage.HTML}/>
+                        <p>You just need to add the property called <span className={"hljs-attr"}>theme</span> then set the theme to light</p>
+                    </Card>
+                    <Card headerContent={"Disabled"}>
+                        <Code code={`<TextBox disabled={true} onChange={this.onChangeBaseTextBox} value={baseTextBoxValue}/>`} language={ICodeLanguage.HTML}/>
+                        <p>Just add the propertie disabled, it only accept boolean value</p>
+                        <Code code={`<TextBox disabled={true} onChange={this.onChangeBaseTextBox} value={baseTextBoxValue} test={"oui"}>Coucou</TextBox>`} language={ICodeLanguage.HTML}/>
+                    </Card>
+                </Card>
             </>
         );
     }
@@ -85,4 +102,5 @@ export default class TextBoxExemple extends React.Component<ITextBoxExempleProps
     public onChangeBaseTextBox(event:React.FormEvent<HTMLInputElement>){
         this.setState({baseTextBoxValue:event.currentTarget.value});
     }
+
 }

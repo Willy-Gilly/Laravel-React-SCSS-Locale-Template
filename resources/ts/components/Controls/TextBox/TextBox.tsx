@@ -19,7 +19,7 @@ export default class TextBox extends React.Component<ITextBoxProps,ITextBoxState
         let validationStyle:boolean = !(disableValidationStyle ?? false);
         let isLight:boolean = (theme ?? ITextBoxTheme.Dark) == ITextBoxTheme.Light;
         return (
-            <input className={[styles.textBox, anim ? styles.animTextBox : '', isLight ? styles.lightTextBox : '', classNames?.textBox, validationStyle && regex != undefined ? styles.validationStyle : ''].join(' ')}
+            <input className={[styles.textBox, anim ? styles.animTextBox : '', isLight ? styles.lightTextBox : '', classNames?.textBox, (validationStyle && regex != undefined) || (validationStyle && required) ? styles.validationStyle : ''].join(' ')}
                    onChange={!(disabled ?? false) ? onChange : () => ''} style={style?.textBox} type={(isPasswordInput ?? false) ? "password" : "text"} name={name ?? undefined}
                    placeholder={placeholder ?? ''} onKeyPress={onKeyPress} required={required ?? false}
                    disabled={disabled ?? false} value={value} pattern={regex ? regex instanceof RegExp ? regex.source : regex : undefined}/>

@@ -6,7 +6,6 @@ export interface ICardProps{
     style?: ICardStyle;//Custom styles
     classNames?: ICardClassNames;//Custom classNames
     theme?: ICardTheme;//Define light or dark
-    display?: ICardDisplay;//Define how it will look as default
     collapsable?:boolean;//Define if the card can be collapsed
     collapsed?:boolean;//Define if the component should be collapsed;
     headerContent?:string;//String Content of the header
@@ -24,19 +23,15 @@ export enum ICardPosition{
     center,
     right,
 }
-export enum ICardDisplay{
-    Default,
-    Warning,
-    Error,
-    Confirm,
-    Primary,
-    PrimaryWarning,
-    PrimaryError,
-    PrimaryConfirm
-}
 export interface ICardStyle{
-    root: React.CSSProperties;
+    root?:React.CSSProperties;
+    closingButton?:React.CSSProperties;
+    title?:React.CSSProperties;
+    separator?:React.CSSProperties;
 }
 export interface ICardClassNames{
-    root: string;
+    root?: string;
+    closingButton?:string;
+    title?:string;
+    separator?:string;
 }
