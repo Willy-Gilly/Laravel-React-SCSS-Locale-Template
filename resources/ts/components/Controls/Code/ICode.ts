@@ -8,7 +8,7 @@ export interface ICodeProps{
     theme?: ICodeTheme;//Define light or dark
     display?: ICodeDisplay;//Define how it will look as default
     code:string;
-    language:ICodeLanguage;
+    //language:ICodeLanguage;
 }
 export interface ICodeStates{
     renderedCode:React.ReactNode | React.ReactNode[];
@@ -32,20 +32,20 @@ export interface ICodeClassNames{
     root: string;
 }
 
-export interface HTMLElement{
-    position:number;
-    value:string;
-    type: HTMLTypes;
-}
-export enum HTMLTypes{
-    OpeningElement,
-    ClosingNoPropsElement,
-    ClosingElement,
-    Attribute,
-    EqualSign,
-    OpeningCurlyBracket,
-    ClosingCurlyBracket,
-    AttributeValue,
-    StringValue,
-    Break
-}
+// export interface HTMLElement{
+//     position:number;
+//     value:string;
+//     type: HTMLTypes;
+// }
+// export enum HTMLTypes{
+//     OpeningElement,
+//     ClosingNoPropsElement,
+//     ClosingElement,
+//     Attribute,
+//     EqualSign,
+//     OpeningCurlyBracket,
+//     ClosingCurlyBracket,
+//     AttributeValue,
+//     StringValue,
+//     Break
+// }
