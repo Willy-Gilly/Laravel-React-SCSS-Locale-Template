@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface ILinkProps{
     children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise
     onClick: () => any;//Function called on click
@@ -5,9 +7,9 @@ export interface ILinkProps{
     style?: ILinkStyle;//Custom styles
     classNames?: ILinkClassNames;//Custom classNames
 }
-export interface ILinkStates{}
+
 export interface ILinkStyle{
-    root: React.CSSProperties;
+    root: CSSProperties;
 }
 export interface ILinkClassNames{
     root: string;

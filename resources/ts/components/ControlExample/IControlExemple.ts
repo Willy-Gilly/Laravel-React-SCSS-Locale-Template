@@ -1,8 +1,5 @@
-import {GlobalProps} from "../IMainComponent";
-import {ILangOptionsProps} from "../Controls/LangOptions/ILangOptions";
+export interface IControlExempleProps{
 
-export interface IControlExempleProps extends GlobalProps{
-    langProps:ILangOptionsProps;
 }
 export interface IControlExempleStates{
     page:SubPage;

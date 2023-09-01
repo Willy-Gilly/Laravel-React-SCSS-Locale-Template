@@ -1,9 +1,11 @@
+@import '../../../../sass/variables';
+
 .textBox{
     outline: none;
     padding: 8px;
     border-radius: 5px;
     background-color: #2d2d2d;
-    color: antiquewhite;
+    color: $font-color;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,11 +27,11 @@
     transition: linear 50ms;
 }
 .lightTextBox{
-    color: black;
-    background-color: antiquewhite;
+    color: $font-color-light;
+    background-color: $body-background-color-light;
 }
 .lightTextBox:focus{
-    background-color: #ffffff;
+    background-color: #eeeeee;
 }
 .validationStyle:valid{
     border-color: #005f07;

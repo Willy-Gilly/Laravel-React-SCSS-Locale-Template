@@ -2,24 +2,25 @@ import * as React from 'react';
 import styles from './Header.module.scss';
 
 import {
-    IHeaderProps,
-    IHeaderStates
+    IHeaderProps
 } from './IHeader';
 import Nav from "./Nav/Nav";
+import {ThemeContext} from "../../Context/ThemeContext";
 
-export default class Header extends React.Component<IHeaderProps,IHeaderStates> {
+export default class Header extends React.Component<IHeaderProps> {
     constructor(props) {
         super(props);
         this.stateInitializer();
     }
     private stateInitializer() {this.state = {};}
+    static contextType = ThemeContext;
     public render() : React.ReactElement {
         const {
-            strings, langProps, children, fixed
+            children, fixed
         } = this.props;
         return (
             <header className={[styles.header, fixed ?? false ? styles.fixed : styles.headerRelative].join(' ')}>
-                <Nav {...this.props} {...langProps} strings={strings.Nav}> {children} </Nav>
+                <Nav> {children} </Nav>
             </header>
         );
     }

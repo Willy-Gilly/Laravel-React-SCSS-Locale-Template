@@ -3,23 +3,21 @@ import styles from './ControlExemple.module.scss';
 
 import {IControlExempleProps, IControlExempleStates, SubPage} from './IControlExemple';
 import Link from "../Controls/Link/Link";
-import TextBox from "../Controls/TextBox/TextBox";
 import TextBoxExemple from "./TextBoxExemple/TextBoxExemple";
+import {ThemeContext} from "../../Context/ThemeContext";
 
 
-export default class ControlExemple extends React.Component<IControlExempleProps,IControlExempleStates> {
+export default class ControlExample extends React.Component<IControlExempleProps,IControlExempleStates> {
     constructor(props) {
         super(props);
         this.stateInitializer();
         this.changePage = this.changePage.bind(this);
     }
-    public componentDidMount() {
-
-    }
+    static contextType = ThemeContext;
 
     private stateInitializer() {
         this.state = {
-            page: SubPage.TextBox
+            page: SubPage.Base
         };
     }
 
@@ -93,7 +91,7 @@ export default class ControlExemple extends React.Component<IControlExempleProps
                   <>
                     <div>
                         <h2>TextBox</h2>
-                        <div>
+                        <div className={styles.subCategory}>
                             <TextBoxExemple/>
                         </div>
                     </div>

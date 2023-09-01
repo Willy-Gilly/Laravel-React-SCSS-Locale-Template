@@ -1,37 +1,22 @@
 import * as React from 'react';
 import styles from "./LangOptions.module.scss";
-import {ILangOptionsProps, ILangOptionsStates} from "./ILangOptions";
-export default class LangOptions extends React.Component<ILangOptionsProps,ILangOptionsStates> {
-    constructor(props) {
-        super(props);
-        this.stateInitializer();
-        this.changeSelectedLocale = this.changeSelectedLocale.bind(this);
-        this.makeActive = this.makeActive.bind(this);
+import { useContext, useState } from 'react';
+import {LangContext} from "../../../Context/LangContext";
+export default function LangOptions() {
+    const [active, setActive] = useState(false);
+    const {locale,setLocale} = useContext(LangContext);
+    const makeActive = () => {
+        if(!active) setActive(true);
     }
-    private stateInitializer() {
-        this.state = {
-            selectedLocale: this.props.selectedLocale,
-            active:false,
-        };
+    const changeSelectedLocale = (value:string) => {
+        setActive(false);
+        setLocale(value);
+        console.log("Changing language to "+value);
     }
-    public render() : React.ReactElement {
-        const {
-            selectedLocale, active
-        } = this.state;
-        const {
-            availableLanguages
-        } = this.props;
-        return (
-            <div className={styles.languagePicker} onClick={this.makeActive}>
-                {active || (selectedLocale == "fr" && !active) ? <div onClick={active ? () => this.changeSelectedLocale('fr') : () => ''} className={[styles.language,styles.france].join(' ')}> </div> : ''}
-                {active || (selectedLocale == "en" && !active) ? <div onClick={active ? () => this.changeSelectedLocale('en') : () => ''} className={[styles.language,styles.english].join(' ')}> </div> : ''}
-            </div>
-        );
-    }
-    public makeActive(){
-        if(!this.state.active) this.setState({active: true});
-    }
-    public changeSelectedLocale(value:string){
-        this.setState({selectedLocale: value, active: false}, () => {this.props.changeSelectedLocale(this.state.selectedLocale); console.log("Changing language to "+this.state.selectedLocale)});
-    }
+    return (
+        <div className={styles.languagePicker} onClick={makeActive}>
+            {active || (locale == "fr" && !active) ? <div onClick={active ? () => changeSelectedLocale('fr') : () => ''} className={[styles.language,styles.france].join(' ')}> </div> : ''}
+            {active || (locale == "en" && !active) ? <div onClick={active ? () => changeSelectedLocale('en') : () => ''} className={[styles.language,styles.english].join(' ')}> </div> : ''}
+        </div>
+    );
 }

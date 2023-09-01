@@ -5,11 +5,17 @@ import {
     ITestProps,
     ITestStates
 } from './ITest';
+import {AppContext} from "../../Context/AppContext";
+import { useContext, useState } from 'react';
 
-
-export default class Component extends React.Component<ITestProps,ITestStates> {
-    constructor(props) {
-        super(props);
+export default class TestClassComponent extends React.Component<ITestProps,ITestStates> {
+    //add context exemple:
+    /*
+    public static contextType = AppContext;
+    public context!: React.ContextType<typeof AppContext>;
+    */
+    constructor(props,context) {
+        super(props,context);
         this.stateInitializer();
     }
     public componentDidMount():void {
@@ -29,10 +35,21 @@ export default class Component extends React.Component<ITestProps,ITestStates> {
         const {
 
         } = this.props;
+        const {
+
+        } = this.context;
         return (
             <>
 
             </>
         );
     }
+}
+
+export function TestFunctionalComponent(props:ITestProps): React.ReactElement{
+    const context = useContext(AppContext);
+    const [state, setState] = useState('default value');
+    const {} = props;
+    return (<>
+    </>);
 }

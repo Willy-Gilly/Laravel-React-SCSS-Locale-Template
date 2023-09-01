@@ -1,12 +1,10 @@
-import {NavLang} from "../IHeader";
-import {GlobalProps} from "../../IMainComponent";
-import {ILangOptionsProps} from "../../Controls/LangOptions/ILangOptions";
-import React from "react";
 
-export interface INavProps extends GlobalProps{
-    strings:NavLang;
-    langProps: ILangOptionsProps;
+import React from "react";
+import {IThemeContext} from "../../../Context/ThemeContext";
+
+export interface INavProps{
     children?: React.ReactNode | React.ReactNode[];
+    theme?: IThemeContext;
 }
 export interface INavStates{
     showingLoginModal:boolean;

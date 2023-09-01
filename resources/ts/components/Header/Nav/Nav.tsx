@@ -7,10 +7,15 @@ import Button from "../../Controls/Button/Button";
 import {IButtonDisplay, IButtonStyle} from "../../Controls/Button/IButton";
 import NavButton from "./NavButton/NavButton";
 import TextBox from "../../Controls/TextBox/TextBox";
+import {IThemeContext} from "../../../Context/ThemeContext";
+import {AppContext} from "../../../Context/AppContext";
+import {NavLang} from "../IHeader";
 
 export default class Nav extends React.Component<INavProps,INavStates> {
-    constructor(props) {
-        super(props);
+    public static contextType = AppContext;
+    public context!: React.ContextType<typeof AppContext>;
+    constructor(props, context) {
+        super(props, context);
         this.stateInitializer();
         this.loginViewState = this.loginViewState.bind(this);
         this.logoutViewState = this.logoutViewState.bind(this);
@@ -26,7 +31,6 @@ export default class Nav extends React.Component<INavProps,INavStates> {
         this.handleLoginRChange = this.handleLoginRChange.bind(this);
         this.handlePseudoChange = this.handlePseudoChange.bind(this);
     }
-
     private regexStringEmail:string = "^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$";
     private regexStringLogin:string = "^([a-zA-Z0-9-_]){3,20}$";//use the same for pseudo
     private regexStringPassword:string = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$";
@@ -49,52 +53,45 @@ export default class Nav extends React.Component<INavProps,INavStates> {
             firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput
         } = this.state;
         const {
-            strings, auth, langProps, user, children
+            children, theme
         } = this.props;
+        const strings:NavLang = this.context.lang.strings.Header.Nav;
+        const userC = this.context.user;
+        const {login, logout, register, user, isAuth} = userC;
 
         const buttonStyle:IButtonStyle = {button: {width: "70%", alignSelf:"center"}};
-
-        if(auth){
-            return (<>
-                <nav>
-                    <div className={styles.left}>
-                        <LangOptions {...langProps}/>
-                        {user ? <p>{user.pseudo}</p> : ''}
-                    </div>
-                    <div className={styles.middle}>
-                        {children}
-                    </div>
-                    <div className={styles.right}>
-                        <NavButton onClick={this.logoutViewState}>{strings.Logout}</NavButton>
-                    </div>
-                </nav>
-                <Modal close={this.logoutViewState} showing={showingConfirmationLogoutModal} headerTitle={strings.LogoutHeader} hasClosingButton={false}>
-                    <div className={styles.modalConfirmContainer}>
-                        <Button onClick={this.logoutViewState} display={IButtonDisplay.Error}> {strings.Cancel} </Button>
-                        <Button onClick={() => {this.props.logoutF()}} display={IButtonDisplay.Confirm}> {strings.Confirm} </Button>
-                    </div>
-                </Modal>
-            </>);
-        }
+        const navLight = (theme ?? this.context.theme) == IThemeContext.Light ? styles.navLight : '';
         return (<>
-            <nav>
+            <nav className={navLight}>
                 <div className={styles.left}>
-                    <LangOptions {...langProps}/>
+                    <LangOptions/>
+                    {user ? <p>{user.pseudo}</p> : ''}
                 </div>
                 <div className={styles.middle}>
                     {children}
                 </div>
                 <div className={styles.right}>
-                    <NavButton onClick={this.loginViewState}>{strings.Login}</NavButton>
-                    <NavButton onClick={this.registerViewState}>{strings.Register}</NavButton>
+                    {
+                        isAuth ? <NavButton onClick={this.logoutViewState}>{strings.Logout}</NavButton>
+                            : <>
+                                <NavButton onClick={this.loginViewState}>{strings.Login}</NavButton>
+                                <NavButton onClick={this.registerViewState}>{strings.Register}</NavButton>
+                            </>
+                    }
                 </div>
             </nav>
+            <Modal close={this.logoutViewState} showing={showingConfirmationLogoutModal} headerTitle={strings.LogoutHeader} hasClosingButton={false}>
+                <div className={styles.modalConfirmContainer}>
+                    <Button onClick={this.logoutViewState} display={IButtonDisplay.Error}> {strings.Cancel} </Button>
+                    <Button onClick={logout} display={IButtonDisplay.Confirm}> {strings.Confirm} </Button>
+                </div>
+            </Modal>
             <Modal close={this.loginViewState} showing={showingLoginModal} headerTitle={strings.Login} hasClosingButton={false}>
                 <div className={styles.modalLoginContainer}>
                     <TextBox onChange={this.handleLoginChange} value={loginInput} name={"login"} placeholder={strings.LoginInput} onKeyPress={this.handleKeyPressLogin}/>
                     <TextBox onChange={this.handlePasswordChange} value={passwordInput} isPasswordInput={true} name={"password"} placeholder={strings.PasswordInput}/>
                     <Button disabled={loginInput == "" || passwordInput == ""} onClick={loginInput != "" && passwordInput != "" ? () => {
-                        this.props.loginF(loginInput, passwordInput);
+                        login(loginInput, passwordInput);
                     } : () => this.loginViewState()} style={buttonStyle}> {strings.Confirm} </Button>
                 </div>
             </Modal>
@@ -125,7 +122,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                         <TextBox onChange={this.handlePasswordRChange} value={passwordRInput} name={"password"} isPasswordInput={true} required={true} regex={this.regexStringPassword} placeholder={strings.PasswordInput}/>
                     </div>
                     <Button onClick={() => {
-                        this.props.registerF(firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput);
+                        register(firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput);
                     }} style={buttonStyle} disabled={!canRegister}> {strings.Confirm} </Button>
                 </div>
             </Modal>
@@ -134,34 +131,34 @@ export default class Nav extends React.Component<INavProps,INavStates> {
     //region Login
     public handleKeyPressLogin(event:React.KeyboardEvent){
         if(event.key == "Enter" && (this.state.loginInput != "" && this.state.passwordInput != "")){
-            this.props.loginF(this.state.loginInput, this.state.passwordInput);
+            this.context.user.login(this.state.loginInput, this.state.passwordInput);
         }
     }
-    public handleLoginChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({loginInput: event.currentTarget.value});
+    public handleLoginChange(value:string){
+        this.setState({loginInput: value});
     }
-    public handlePasswordChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({passwordInput: event.currentTarget.value});
+    public handlePasswordChange(value:string){
+        this.setState({passwordInput: value});
     }
     //endregion login
     //region register
-    public handleFirstNameChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({firstNameInput:event.currentTarget.value}, () => this.validateRegister());
+    public handleFirstNameChange(value:string){
+        this.setState({firstNameInput:value}, () => this.validateRegister());
     }
-    public handleLastNameChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({lastNameInput:event.currentTarget.value}, () => this.validateRegister());
+    public handleLastNameChange(value:string){
+        this.setState({lastNameInput:value}, () => this.validateRegister());
     }
-    public handleLoginRChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({loginRInput:event.currentTarget.value}, () => this.validateRegister());
+    public handleLoginRChange(value:string){
+        this.setState({loginRInput:value}, () => this.validateRegister());
     }
-    public handlePseudoChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({pseudoInput:event.currentTarget.value}, () => this.validateRegister());
+    public handlePseudoChange(value:string){
+        this.setState({pseudoInput:value}, () => this.validateRegister());
     }
-    public handleEmailRChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({emailRInput:event.currentTarget.value}, () => this.validateRegister());
+    public handleEmailRChange(value:string){
+        this.setState({emailRInput:value}, () => this.validateRegister());
     }
-    public handlePasswordRChange(event:React.FormEvent<HTMLInputElement>){
-        this.setState({passwordRInput:event.currentTarget.value}, () => this.validateRegister());
+    public handlePasswordRChange(value:string){
+        this.setState({passwordRInput:value}, () => this.validateRegister());
     }
     public validateRegister(){
         const regexLogin = new RegExp(this.regexStringLogin);//and pseudo

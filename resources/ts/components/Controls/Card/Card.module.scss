@@ -1,8 +1,10 @@
+@import '../../../../sass/variables';
+
 .card{
     padding: 12px;
     border-radius: 5px;
-    color: antiquewhite;
-    background-color: rgb(30, 30, 30);
+    color: $font-color;
+    background-color: $body-background-color;
     box-shadow: rgba(0, 0, 0, 0.2) 4px 4px;
     border-color: #000000;
     display: flex;
@@ -30,8 +32,8 @@
     align-items: end;
 }
 .cardLight{
-    background-color: antiquewhite;
-    color: black;
+    background-color: $body-background-color-light;
+    color: $font-color-light;
     box-shadow: rgba(61, 61, 61, 0.2) 4px 4px;
     border-color: #7d7d7d;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import {IThemeContext} from "../../../Context/ThemeContext";
 
 export interface IModalProps{
     showing:boolean;//Must be true to show
@@ -8,17 +9,10 @@ export interface IModalProps{
     headerTitle?:string;//Displayed only if header
     hideOnEmptyClick?:boolean;//Default is true
     hasClosingButton?:boolean;//Default is true
-    modalTheme?:ModalTheme;//Define if the modal must be light or dark
+    modalTheme?:IThemeContext;//Define if the modal must be light or dark
     disableAnimation?:boolean;//Define if animations should be enabled
     style?: IModalStyle;//Custom styles
     classNames?: IModalClassNames//Custom classNames
-}
-export interface IModalStates{
-    canLeave:boolean;
-}
-export enum ModalTheme{
-    Dark,
-    Light
 }
 export interface IModalStyle{
     calloutStyle?: React.CSSProperties;

@@ -1,4 +1,5 @@
-import React, {CSSProperties} from "react";
+import React from "react";
+import {IThemeContext} from "../../../Context/ThemeContext";
 
 export interface IButtonProps{
     children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise
@@ -7,15 +8,8 @@ export interface IButtonProps{
     disableAnimation?:boolean;//Define if animations should be enabled
     style?: IButtonStyle;//Custom styles
     classNames?: IButtonClassNames;//Custom classNames
-    theme?: IButtonTheme;//Define light or dark
+    theme?: IThemeContext;//Define light or dark
     display?: IButtonDisplay;//Define how it will look as default
-}
-export interface IButtonStates{
-
-}
-export enum IButtonTheme{
-    Dark,
-    Light
 }
 export enum IButtonDisplay{
     Default,
