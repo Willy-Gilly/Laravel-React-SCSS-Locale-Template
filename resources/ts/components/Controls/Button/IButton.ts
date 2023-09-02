@@ -1,5 +1,5 @@
 import React from "react";
-import {IThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext} from "../../../context/ThemeContext";
 
 export interface IButtonProps{
     children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise
@@ -10,6 +10,7 @@ export interface IButtonProps{
     classNames?: IButtonClassNames;//Custom classNames
     theme?: IThemeContext;//Define light or dark
     display?: IButtonDisplay;//Define how it will look as default
+    type?:"button"|"submit"|"reset";
 }
 export enum IButtonDisplay{
     Default,

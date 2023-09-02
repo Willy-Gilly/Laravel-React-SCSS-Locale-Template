@@ -1,6 +1,6 @@
 
 import React from "react";
-import {IThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext} from "../../../context/ThemeContext";
 
 export interface INavProps{
     children?: React.ReactNode | React.ReactNode[];

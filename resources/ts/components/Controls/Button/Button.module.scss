@@ -13,67 +13,67 @@
     border-color: #000000;
     transition: linear 50ms;
     font-size: 20px;
-}
-.button:hover{
-    background-color: #1d1d1d;
-}
-.button:not(:disabled){
-    cursor:pointer;
-}
-.button:disabled{
-    cursor: not-allowed;
-}
-.animButton:active:not(:disabled){
-    transform: translateY(5%);
-}
-.lightButton{
-    color: $font-color-light;
-    background-color: $body-background-color-light;
-}
-.lightButton:hover{
-    background-color: #eeeeee;
-}
-.information{
-    color: #a68900;
-    border-color: #786400;
-}
-.confirmation{
-    color: #009d0a;
-    border-color: #005f07;
-}
-.error{
-    color: #91100e;
-    border-color: #6c0705;
-}
-.primary{
-    background-color: #2b4e91;
-    border-color: #193878;
-    color: $font-color;
-}
-.primary:hover{
-    background-color: #1f4582;
-}
-.primary.information{
-    background-color: #a68900;
-    border-color: #786400;
-    color: $font-color;
-}
-.primary.information:hover{
-    background-color: #937a01;
-}
-.primary.confirmation{
-    background-color: #009d0a;
-    border-color: #005f07;
-    color: $font-color;
-}
-.primary.confirmation:hover{
-    background-color: #007f09;
-}
-.primary.error{
-    background-color: #91100e;
-    border-color: #6c0705;
-    color: $font-color;
-}
-.primary.error:hover{
-    background-color: #7d0b09;
+    &:hover{
+        background-color: #1d1d1d;
+    }
+    &:not(:disabled){
+        cursor:pointer;
+    }
+    &:disabled{
+        cursor: not-allowed;
+    }
+    &.animButton:active:not(:disabled){
+        transform: translateY(5%);
+    }
+    &.lightButton{
+        color: $font-color-light;
+        background-color: $body-background-color-light;
+        &:hover{
+            background-color: #eeeeee;
+        }
+    }
+    &.information{
+        color: #a68900;
+        border-color: #786400;
+    }
+    &.confirmation{
+        color: #009d0a;
+        border-color: #005f07;
+    }
+    &.error{
+        color: #91100e;
+        border-color: #6c0705;
+    }
+    &.primary{
+        background-color: #2b4e91;
+        border-color: #193878;
+        color: $font-color;
+        &:hover{
+            background-color: #1f4582;
+        }
+        &.information{
+            background-color: #a68900;
+            border-color: #786400;
+            color: $font-color;
+            &:hover{
+                background-color: #937a01;
+            }
+        }
+        &.confirmation{
+            background-color: #009d0a;
+            border-color: #005f07;
+            color: $font-color;
+            &:hover{
+                background-color: #007f09;
+            }
+        }
+        &.error{
+            background-color: #91100e;
+            border-color: #6c0705;
+            color: $font-color;
+            &:hover{
+                background-color: #7d0b09;
+            }
+        }
+    }
 }

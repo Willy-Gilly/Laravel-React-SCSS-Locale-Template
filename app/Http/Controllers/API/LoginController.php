@@ -68,7 +68,7 @@ class LoginController extends BaseAPIController
         $token = $request->user()->token();
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!'];
-        return $this->sendResponse($response, 200);
+        return $this->sendResponse($response, 'You have been successfully logged out!');
     }
 
     public function test (Request $request): JsonResponse
@@ -78,6 +78,6 @@ class LoginController extends BaseAPIController
 
     public function getUser(Request $request): JsonResponse
     {
-        return $this->sendResponse($request->user(),200);
+        return $this->sendResponse($request->user(),"Logged user returned!");
     }
 }

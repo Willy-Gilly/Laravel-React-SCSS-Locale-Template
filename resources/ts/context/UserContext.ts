@@ -1,10 +1,10 @@
 import React from "react";
-import {Profile} from "../components/IMainComponent";
+import {IProfile} from "../components/IMainComponent";
 
 export interface UserContextT {
     isAuth:boolean;
     bearerToken:string;
-    user:Profile;
+    user:IProfile;
     login(emailOrLogin: string, password: string): void;
     logout():void;
     register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string):void;

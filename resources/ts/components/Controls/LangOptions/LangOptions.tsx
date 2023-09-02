@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from "./LangOptions.module.scss";
 import { useContext, useState } from 'react';
-import {LangContext} from "../../../Context/LangContext";
+import {LangContext} from "../../../context/LangContext";
 export default function LangOptions() {
     const [active, setActive] = useState(false);
     const {locale,setLocale} = useContext(LangContext);

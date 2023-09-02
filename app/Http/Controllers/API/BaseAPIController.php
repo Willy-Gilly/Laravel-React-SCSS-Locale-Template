@@ -18,14 +18,14 @@ class BaseAPIController extends Controller
      * @param $message
      * @return JsonResponse
      */
-    public function sendResponse($result, $message): JsonResponse
+    public function sendResponse($result, $message,$code = 200): JsonResponse
     {
         $response = [
             'success' => true,
             'data'    => $result,
             'message' => $message,
         ];
-        return response()->json($response, 200);
+        return response()->json($response, $code);
     }
 
     /**
@@ -41,6 +41,7 @@ class BaseAPIController extends Controller
         $response = [
             'success' => false,
             'message' => $error,
+            'data' => null,
         ];
         if(!empty($errorMessages)){
             $response['data'] = $errorMessages;

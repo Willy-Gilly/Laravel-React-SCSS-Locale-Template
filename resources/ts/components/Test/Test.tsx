@@ -5,7 +5,7 @@ import {
     ITestProps,
     ITestStates
 } from './ITest';
-import {AppContext} from "../../Context/AppContext";
+import {AppContext} from "../../context/AppContext";
 import { useContext, useState } from 'react';
 
 export default class TestClassComponent extends React.Component<ITestProps,ITestStates> {

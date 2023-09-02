@@ -1,5 +1,5 @@
 import {Lang} from "./Lang";
-import {IThemeContext} from "../Context/ThemeContext";
+import {IThemeContext} from "../context/ThemeContext";
 
 export interface IMainComponentProps{
     lang:Lang;
@@ -8,11 +8,11 @@ export interface IMainComponentStates{
     locale:string;
     auth:boolean;
     bearerToken:string;
-    user:Profile;
+    user:IProfile;
     page:Page;
     theme:IThemeContext|any;
 }
-export interface Auth{
+export interface IAuth {
     token:string;
     name:string;
 }
@@ -21,7 +21,7 @@ export interface APIReturn{
     data:any;
     message:string;
 }
-export interface Profile{
+export interface IProfile {
     firstname:string;
     lastname:string;
     login:string;

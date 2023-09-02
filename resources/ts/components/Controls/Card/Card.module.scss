@@ -12,123 +12,122 @@
     border-width: 2px;
     transition: linear 50ms;
     font-size: 20px;
-}
-.centered{
-    align-items: center;
-    justify-content: center;
-}
-.centered > div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.right{
-    align-items: end;
-}
-.right > div{
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-}
-.cardLight{
-    background-color: $body-background-color-light;
-    color: $font-color-light;
-    box-shadow: rgba(61, 61, 61, 0.2) 4px 4px;
-    border-color: #7d7d7d;
-}
 
-.information{
-    color: #a68900;
-    border-color: #786400;
-}
-.confirmation{
-    color: #009d0a;
-    border-color: #005f07;
-}
-.error{
-    color: #91100e;
-    border-color: #6c0705;
-}
-.primary{
-    background-color: #2b4e91;
-    border-color: #193878;
-    color: antiquewhite;
-}
-.primary:hover{
-    background-color: #1f4582;
-}
-.primary.information{
-    background-color: #a68900;
-    border-color: #786400;
-    color: antiquewhite;
-}
-.primary.information:hover{
-    background-color: #937a01;
-}
-.primary.confirmation{
-    background-color: #009d0a;
-    border-color: #005f07;
-    color: antiquewhite;
-}
-.primary.confirmation:hover{
-    background-color: #007f09;
-}
-.primary.error{
-    background-color: #91100e;
-    border-color: #6c0705;
-    color: antiquewhite;
-}
-.primary.error:hover{
-    background-color: #7d0b09;
-}
+    &.centered{
+        align-items: center;
+        justify-content: center;
+    }
+    &.centered > div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    &.right{
+        align-items: end;
+    }
+    &.right > div{
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+    }
+    &.cardLight{
+        background-color: $body-background-color-light;
+        color: $font-color-light;
+        box-shadow: rgba(61, 61, 61, 0.2) 4px 4px;
+        border-color: #7d7d7d;
+    }
+
+    &.information{
+        color: #a68900;
+        border-color: #786400;
+    }
+    &.confirmation{
+        color: #009d0a;
+        border-color: #005f07;
+    }
+    &.error{
+        color: #91100e;
+        border-color: #6c0705;
+    }
+    &.primary{
+        background-color: #2b4e91;
+        border-color: #193878;
+        color: antiquewhite;
+    }
+    &.primary:hover{
+        background-color: #1f4582;
+    }
+    &.primary.information{
+        background-color: #a68900;
+        border-color: #786400;
+        color: antiquewhite;
+    }
+    &.primary.information:hover{
+        background-color: #937a01;
+    }
+    &.primary.confirmation{
+        background-color: #009d0a;
+        border-color: #005f07;
+        color: antiquewhite;
+    }
+    &.primary.confirmation:hover{
+        background-color: #007f09;
+    }
+    &.primary.error{
+        background-color: #91100e;
+        border-color: #6c0705;
+        color: antiquewhite;
+    }
+    &.primary.error:hover{
+        background-color: #7d0b09;
+    }
 
 
-//card Header
-.cardHeader{
-    display: flex;
-    gap:5px;
-    width: 100%;
-    align-content: center;
-    text-align: center;
-}
-.cardCloseButton{
-    margin-left: auto;
-    background: rgba(0,0,0,0);
-    font-size: larger;
-    color: rgb(193,193,193);
-    cursor: pointer;
-    padding: 10px;
-    height: 100%;
-}
-.cardCloseButton:hover{
-    color: rgb(255, 255, 255);
-    filter: drop-shadow(0 0 0.75rem #171717);
-}
+    //card Header
+    .cardHeader{
+        display: flex;
+        gap:5px;
+        width: 100%;
+        align-content: center;
+        text-align: center;
 
-.globalLightBackground{
-    background: radial-gradient(rgba(50, 50, 50, 0.4), rgba(167, 167, 167, 0.2));
-}
-.cardButtonLight{
-    color: rgb(24, 24, 24);
-}
-.cardButtonLight:hover{
-    color: rgb(0, 0, 0);
-    filter: drop-shadow(1rem 1rem 2rem #000000);
-}
-.headerSeparator{
-    width: 100%;
-    height: 1px;
-    background-color: rgb(193,193,193);
-    margin: 0 auto 16px;
-    border-radius: 10%;
-}
-.separatorLight{
-    background-color: rgb(24, 24, 24);
-}
-.cardTitle{
-    padding:0 10px;
-}
-.cardBody{
-    padding: 2px;
+        .cardCloseButton{
+            margin-left: auto;
+            background: rgba(0,0,0,0);
+            font-size: larger;
+            color: rgb(193,193,193);
+            cursor: pointer;
+            padding: 10px;
+            height: 100%;
+            &:hover{
+                color: rgb(255, 255, 255);
+                filter: drop-shadow(0 0 0.75rem #171717);
+            }
+            &.cardButtonLight{
+                color: rgb(24, 24, 24);
+                &:hover{
+                    color: rgb(0, 0, 0);
+                    filter: drop-shadow(1rem 1rem 2rem #000000);
+                }
+            }
+        }
+    }
+    .headerSeparator{
+        width: 100%;
+        height: 1px;
+        background-color: rgb(193,193,193);
+        margin: 0 auto 16px;
+        border-radius: 10%;
+        &.separatorLight{
+            background-color: rgb(24, 24, 24);
+        }
+    }
+    .cardTitle{
+        padding:0 10px;
+    }
+    .cardBody{
+        padding: 2px;
+    }
+
 }

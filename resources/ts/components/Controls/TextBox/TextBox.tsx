@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './TextBox.module.scss';
 
 import {ITextBoxProps} from './ITextBox';
-import {IThemeContext, ThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext, ThemeContext} from "../../../context/ThemeContext";
 
 export default function TextBox(props:ITextBoxProps): React.ReactElement {
         const {onChange, disabled, disableAnimation, disableValidationStyle, style, classNames, theme, value, regex, isPasswordInput, name, placeholder, onKeyPress, required

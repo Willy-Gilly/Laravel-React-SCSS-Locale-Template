@@ -7,8 +7,8 @@ import Button from "../../Controls/Button/Button";
 import {IButtonDisplay, IButtonStyle} from "../../Controls/Button/IButton";
 import NavButton from "./NavButton/NavButton";
 import TextBox from "../../Controls/TextBox/TextBox";
-import {IThemeContext} from "../../../Context/ThemeContext";
-import {AppContext} from "../../../Context/AppContext";
+import {IThemeContext} from "../../../context/ThemeContext";
+import {AppContext} from "../../../context/AppContext";
 import {NavLang} from "../IHeader";
 
 export default class Nav extends React.Component<INavProps,INavStates> {
@@ -80,13 +80,13 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                     }
                 </div>
             </nav>
-            <Modal close={this.logoutViewState} showing={showingConfirmationLogoutModal} headerTitle={strings.LogoutHeader} hasClosingButton={false}>
+            <Modal close={this.logoutViewState} showing={showingConfirmationLogoutModal && isAuth} headerTitle={strings.LogoutHeader} hasClosingButton={false}>
                 <div className={styles.modalConfirmContainer}>
                     <Button onClick={this.logoutViewState} display={IButtonDisplay.Error}> {strings.Cancel} </Button>
                     <Button onClick={logout} display={IButtonDisplay.Confirm}> {strings.Confirm} </Button>
                 </div>
             </Modal>
-            <Modal close={this.loginViewState} showing={showingLoginModal} headerTitle={strings.Login} hasClosingButton={false}>
+            <Modal close={this.loginViewState} showing={showingLoginModal && !isAuth} headerTitle={strings.Login} hasClosingButton={false}>
                 <div className={styles.modalLoginContainer}>
                     <TextBox onChange={this.handleLoginChange} value={loginInput} name={"login"} placeholder={strings.LoginInput} onKeyPress={this.handleKeyPressLogin}/>
                     <TextBox onChange={this.handlePasswordChange} value={passwordInput} isPasswordInput={true} name={"password"} placeholder={strings.PasswordInput}/>
@@ -95,7 +95,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                     } : () => this.loginViewState()} style={buttonStyle}> {strings.Confirm} </Button>
                 </div>
             </Modal>
-            <Modal close={this.registerViewState} showing={showingRegisterModal} headerTitle={strings.Register} hasClosingButton={false}>
+            <Modal close={this.registerViewState} showing={showingRegisterModal && !isAuth} headerTitle={strings.Register} hasClosingButton={false}>
                 <div className={styles.modalLoginContainer}>
                     <div>
                         <label>{strings.FirstName}</label>
@@ -177,13 +177,13 @@ export default class Nav extends React.Component<INavProps,INavStates> {
     //endregion register
     //region modalOpen
     public logoutViewState():void{
-        this.setState({showingConfirmationLogoutModal: !this.state.showingConfirmationLogoutModal});
+        this.setState({showingConfirmationLogoutModal: !this.state.showingConfirmationLogoutModal, showingLoginModal:false,showingRegisterModal: false});
     }
     public loginViewState():void{
-        this.setState({showingLoginModal: !this.state.showingLoginModal});
+        this.setState({showingLoginModal: !this.state.showingLoginModal, showingRegisterModal:false, showingConfirmationLogoutModal: false});
     }
     public registerViewState():void{
-        this.setState({showingRegisterModal: !this.state.showingRegisterModal});
+        this.setState({showingRegisterModal: !this.state.showingRegisterModal, showingConfirmationLogoutModal: false, showingLoginModal:false});
     }
     //endregion modalOpen
 }

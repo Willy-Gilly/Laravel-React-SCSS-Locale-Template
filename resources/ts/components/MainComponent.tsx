@@ -1,18 +1,19 @@
 import * as React from 'react';
 import styles from "./MainComponent.module.scss";
-import {APIReturn, Auth, IMainComponentProps, IMainComponentStates, Page, Profile} from "./IMainComponent";
+import {APIReturn, IAuth, IMainComponentProps, IMainComponentStates, Page, IProfile} from "./IMainComponent";
 import {IMainLangFile} from "./Lang";
 import axios from "axios";
 import Header from "./Header/Header";
 import ControlExample from "./ControlExample/ControlExample";
 import Button from "./Controls/Button/Button";
 import NavButton from "./Header/Nav/NavButton/NavButton";
-import {IThemeContext, ThemeContext} from "../Context/ThemeContext";
-import {APIContext, APIContextT} from "../Context/APIContext";
-import {UserContext, UserContextT} from "../Context/UserContext";
-import {AppContext, AppContextT} from "../Context/AppContext";
-import {NavigationContext, NavigationContextT} from "../Context/NavigationContext";
-import {LangContext, LangContextT} from "../Context/LangContext";
+import {IThemeContext, ThemeContext} from "../context/ThemeContext";
+import {APIContext, Api} from "../context/APIContext";
+import {UserContext, UserContextT} from "../context/UserContext";
+import {AppContext, AppContextT} from "../context/AppContext";
+import {NavigationContext, NavigationContextT} from "../context/NavigationContext";
+import {LangContext, LangContextT} from "../context/LangContext";
+import {Profile} from "../Profile";
 
 export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     public static contextType = ThemeContext;
@@ -41,7 +42,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             bearerToken: "",
             auth: false,
             locale: this.initLanguage(),
-            page: Page.Main,
+            page: Page.ControlExample,
             theme: themeC != undefined || themeC != "undefined" ? themeC == "0" ? IThemeContext.Dark : IThemeContext.Light : IThemeContext.Dark
         };
     }
@@ -77,7 +78,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             break;
         }
 
-        const ApiContextValue:APIContextT = {
+        const ApiContextValue:Api = {
            get: this.APIGet, post: this.APIPost
         };
         const UserContextValue:UserContextT = {
@@ -154,7 +155,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
     public rememberLogin():void {
         let token = this.getCookie<string>("bearerToken");
         if (!(token == "undefined" || token == undefined)) {
-            console.log("Authentication Token Found, logging in...");
+            console.info("Authentication Token Found, logging in...");
             this.setState({bearerToken: this.getCookie<string>("bearerToken"), auth: true}, () => this.getUser());
         }
     }
@@ -165,9 +166,9 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             if(this.getCookie<string>('theme') != '0'){
                 document.body.style.setProperty("--background-color", this.context == IThemeContext.Light ? 'white' : 'rgb(30, 30, 30)');
                 document.body.style.setProperty("--color", this.context == IThemeContext.Light ? 'rgb(30, 30, 30)' : 'antiquewhite');
-                console.log('Setting to Light Theme');
+                console.info('Setting to Light Theme');
             }else{
-                console.log('Setting to Dark Theme');
+                console.info('Setting to Dark Theme');
             }
         }else{
             this.setCookie('theme', IThemeContext.Dark, 360);
@@ -179,24 +180,17 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
     }
 
     public login(emailOrLogin: string, password: string): void {
-        let obj: APIReturn = undefined;
-        axios.post('api/login', {
-                emailOrLogin: emailOrLogin,
-                password: password
-        }).then((response) => {
-            obj = response.data;
-            if (obj.success) {
-                let auth: Auth = obj.data;
-                this.setCookie("bearerToken", auth.token, 30);
-                console.log("Logging in...");
-                this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
-                    this.getUser();
-                });
-            } else {
-                console.log("Login Failed.");
-            }
+        const api:Api = {
+            get: this.APIGet, post: this.APIPost
+        };
+        Profile.login(api,emailOrLogin, password).then(res => {
+            this.setCookie("bearerToken", res.token, 30);
+            console.info("Logging in...");
+            this.setState({bearerToken: res.token, auth: res.token != ""}, () => {
+                this.getUser();
+            });
         }).catch(function (error) {
-            console.log(error);}
+            console.error(error);}
         );
     }
 
@@ -206,6 +200,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             if(!res || !res.success || !res.data){
                 throw new Error("Data returned seems invalid. Check Network response.");
             }
+            console.info(res.message);
             return res.data as T;
         }).catch(e => {
             console.error(`Couldn't catch a value for uri '${uri}'. Error Message : ${e.message}`);
@@ -218,6 +213,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             if(!res || !res.success || !res.data){
                 throw new Error("Data returned seems invalid. Check Network response.");
             }
+            console.info(res.message);
             return res.data as T;
         }).catch(e => {
             console.error(`Couldn't catch a value for uri '${uri}'. Error Message : ${e.message}`);
@@ -230,50 +226,44 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
     }
 
     public logout():void {
-        this.deleteCookie("bearerToken");
-        this.setState({bearerToken: "", auth: false, user: undefined});
-        axios.get('api/logout', this.getAPIHeader()).then((response) => {
-            console.log(response.data.data.message);
+        const api:Api = {
+            get: this.APIGet, post: this.APIPost
+        };
+        Profile.logout(api).then(res => {
+            if(res){
+                this.deleteCookie("bearerToken");
+                this.setState({bearerToken: "", auth: false, user: undefined});
+            }
         });
     }
 
     private getUser():void {
-        axios.get('api/user',
-            this.getAPIHeader()).then((response)=> {
-            let res:APIReturn = response.data;
-            let user:Profile = res.data;
-            user.token = this.state.bearerToken;
-            this.setState({user:user});
-        }).catch(()=> {
-            console.log("Failed to retrieve user from your token.");
-            this.logout();
-        })
+        const api:Api = {
+            get: this.APIGet, post: this.APIPost
+        };
+        Profile.getUser(api).then(res => {
+            if(!!res){
+                let user:IProfile = res;
+                user.token = this.state.bearerToken;
+                this.setState({user:user});
+            }else{
+                console.log("Failed to retrieve user from your token.");
+                this.logout();
+            }
+        });
     }
 
     public register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string):void{
-        let obj: APIReturn = undefined;
-        axios.post('api/register',{
-            firstname:firstname,
-            lastname:lastname,
-            login:login,
-            pseudo:pseudo,
-            email:email,
-            password:password
-        }).then((response) => {
-            obj = response.data;
-            if (obj.success) {
-                let auth: Auth = obj.data;
-                this.setCookie("bearerToken", auth.token, 30);
-                console.log("Registering...");
-                this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
-                    this.getUser();
-                });
-            } else {
-                console.log("Registering Failed.");
-            }
-        }).catch(() => {
-            console.log("Failed to register");
-        })
+        const api:Api = {
+            get: this.APIGet, post: this.APIPost
+        };
+        Profile.register(api,firstname, lastname, login, pseudo, email, password).then(auth => {
+            this.setCookie("bearerToken", auth.token, 30);
+            console.info("Registering...");
+            this.setState({bearerToken: auth.token, auth: auth.token != ""}, () => {
+                this.getUser();
+            });
+        });
     }
     public changePage(page:Page){
         this.setState({page:page});

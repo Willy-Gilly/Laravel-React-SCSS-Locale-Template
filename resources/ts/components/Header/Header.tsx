@@ -5,7 +5,7 @@ import {
     IHeaderProps
 } from './IHeader';
 import Nav from "./Nav/Nav";
-import {ThemeContext} from "../../Context/ThemeContext";
+import {ThemeContext} from "../../context/ThemeContext";
 
 export default class Header extends React.Component<IHeaderProps> {
     constructor(props) {

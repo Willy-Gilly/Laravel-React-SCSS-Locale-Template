@@ -1,5 +1,5 @@
 import React from "react";
-import {IThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext} from "../../../context/ThemeContext";
 
 export interface ITextBoxProps{
     onChange: (value:string) => void;//Function called on change, must also change the value

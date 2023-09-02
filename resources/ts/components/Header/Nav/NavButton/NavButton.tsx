@@ -3,7 +3,7 @@ import styles from './NavButton.module.scss';
 import {
     INavButtonProps
 } from './INavButton';
-import {IThemeContext, ThemeContext} from "../../../../Context/ThemeContext";
+import {IThemeContext, ThemeContext} from "../../../../context/ThemeContext";
 export default class NavButton extends React.Component<INavButtonProps> {
     constructor(props) {
         super(props);

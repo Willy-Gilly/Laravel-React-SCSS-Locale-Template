@@ -1,5 +1,5 @@
 import React from "react";
-import {IThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext} from "../../../context/ThemeContext";
 
 export interface ICardProps{
     children?: React.ReactNode | React.ReactNode[];//Nothing will be displayed in the body otherwise

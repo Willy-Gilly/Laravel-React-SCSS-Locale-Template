@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './Modal.module.scss';
 import {IModalProps} from './IModal';
-import {IThemeContext, ThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext, ThemeContext} from "../../../context/ThemeContext";
 import { useContext, useState } from 'react';
 export default function Modal(props:IModalProps): React.ReactElement {
     const context = useContext(ThemeContext);

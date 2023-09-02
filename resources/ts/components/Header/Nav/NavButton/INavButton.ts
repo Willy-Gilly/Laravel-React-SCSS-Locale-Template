@@ -1,5 +1,5 @@
 import React from "react";
-import {IThemeContext} from "../../../../Context/ThemeContext";
+import {IThemeContext} from "../../../../context/ThemeContext";
 
 export interface INavButtonProps{
     onClick: () => void;//Function called on click

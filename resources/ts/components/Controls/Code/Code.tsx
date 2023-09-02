@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ICodeProps} from './ICode';
 import Highlight from 'react-highlight';
-import {IThemeContext, ThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext, ThemeContext} from "../../../context/ThemeContext";
 
 export default class Code extends React.Component<ICodeProps> {
     constructor(props,context) {
@@ -11,7 +11,6 @@ export default class Code extends React.Component<ICodeProps> {
     public context!: React.ContextType<typeof ThemeContext>;
     public componentDidMount(){
         let str = ((this.props.theme == undefined ? this.context as IThemeContext : this.props.theme) == IThemeContext.Light ? 'Light' : 'Dark');
-        console.log(str, this.props.theme, this.context);
         if(!document.getElementById('themeCode')){
             let head = document.head;
             let themeCode = document.createElement('link');

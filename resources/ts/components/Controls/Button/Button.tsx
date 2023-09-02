@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styles from './Button.module.scss';
 import {IButtonDisplay, IButtonProps} from './IButton';
-import {IThemeContext, ThemeContext} from "../../../Context/ThemeContext";
+import {IThemeContext, ThemeContext} from "../../../context/ThemeContext";
 import { useContext } from 'react';
 
 export default function Button(props: IButtonProps): React.ReactElement {
     const context = useContext(ThemeContext);
     const {
-        children, onClick, disableAnimation, disabled, style, classNames, theme, display
+        children, onClick, disableAnimation, disabled, style, classNames, theme, display, type
     } = props;
     let displayStyle: string;
     switch (display) {
@@ -42,7 +42,9 @@ export default function Button(props: IButtonProps): React.ReactElement {
     return (
         <button
             className={[styles.button, displayStyle, anim ? styles.animButton : '', isLight ? styles.lightButton : '', classNames?.button].join(' ')}
-            onClick={!(disabled ?? false) ? onClick : () => ''} style={style?.button} disabled={disabled ?? false}>
+            onClick={!(disabled ?? false) ? onClick : () => ''} style={style?.button} disabled={disabled ?? false}
+            type={type ?? "button"}
+        >
             {children ?? ''}
         </button>
     );

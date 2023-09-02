@@ -4,7 +4,8 @@ import styles from './ControlExemple.module.scss';
 import {IControlExempleProps, IControlExempleStates, SubPage} from './IControlExemple';
 import Link from "../Controls/Link/Link";
 import TextBoxExemple from "./TextBoxExemple/TextBoxExemple";
-import {ThemeContext} from "../../Context/ThemeContext";
+import {ThemeContext} from "../../context/ThemeContext";
+import ButtonExemple from "./ButtonExemple/ButtonExemple";
 
 
 export default class ControlExample extends React.Component<IControlExempleProps,IControlExempleStates> {
@@ -96,6 +97,16 @@ export default class ControlExample extends React.Component<IControlExempleProps
                         </div>
                     </div>
                   </>
+                );
+                case SubPage.Button : return (
+                    <>
+                        <div>
+                            <h2>TextBox</h2>
+                            <div className={styles.subCategory}>
+                                <ButtonExemple/>
+                            </div>
+                        </div>
+                    </>
                 );
             }
         };
