@@ -47,7 +47,7 @@ Simple : inside `resources/ts/components`, you have the `MainComponent.tsx`.
 - The MainComponent as well
 - Create your own components, and add em a props with lang file if you want to use locale string.
 
-Edit the languages in `resources/lang/{locale}.json` and then create interfaces to make it usable in `Lang.ts`
+Edit the languages in `resources/lang/{locale}.json` and then create interfaces to make it usable in `translation.d.ts`
 
 ## Tech
 

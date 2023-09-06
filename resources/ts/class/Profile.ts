@@ -1,15 +1,15 @@
-import {IAuth, IProfile} from "./components/IMainComponent";
-import {Api} from "./context/APIContext";
+import {IAuth, IProfile} from "../components/IMainComponent";
+import {Api} from "../context/APIContext";
 
 export class Profile {
     public static login(api:Api,emailOrLogin: string, password: string):Promise<IAuth>{
-        return api.post<IAuth>('api/login', {
+        return api.post<IAuth>('login', {
             emailOrLogin: emailOrLogin,
             password: password
         });
     }
     public static logout(api:Api):Promise<boolean>{
-        return api.get('api/logout').then(res => {
+        return api.get('logout').then(res => {
             return true;
         }).catch(e => {
             return false;
@@ -17,7 +17,7 @@ export class Profile {
     }
 
     public static register(api:Api,firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string):Promise<IAuth>{
-        return api.post<IAuth>('api/register',{
+        return api.post<IAuth>('register',{
             firstname:firstname,
             lastname:lastname,
             login:login,
@@ -28,6 +28,10 @@ export class Profile {
     }
 
     public static getUser(api:Api):Promise<IProfile>{
-        return api.get('api/user');
+        return api.get<IProfile>('user');
+    }
+
+    public static uploadProfilePic(api:Api, formData:FormData):Promise<string>{
+        return api.upload<string>('upload_profile_picture',formData);
     }
 }

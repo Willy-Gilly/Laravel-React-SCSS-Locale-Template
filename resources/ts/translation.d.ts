@@ -1,9 +1,11 @@
-import {HeaderLang} from "./Header/IHeader";
+import {HeaderLang} from "./components/Header/IHeader";
 
-export interface Lang{
-    fr:IMainLangFile;
-    en:IMainLangFile;
+declare module '[a-z][a-z].json' {
+    const content: IMainLangFile;
+    export = content;
 }
+
+
 export interface IMainLangFile{
     MainComponent:MainComponentLang;
     Test:TestLang;
@@ -11,6 +13,7 @@ export interface IMainLangFile{
 }
 export interface MainComponentLang{
     Hello:string;
+    BackToMain:string;
 }
 export interface TestLang{
     Hello:string;

@@ -30,23 +30,23 @@ export default function Modal(props:IModalProps): React.ReactElement {
                 <section className={[styles.modal,anim ? styles.animModal : '', isLight ? styles.modalLight : '', classNames?.modalStyle].join(' ')}
                          onMouseEnter={(e) => canCloseOnEmptyClick(e, false)}
                          onMouseLeave={(e) => canCloseOnEmptyClick(e, true)} style={style?.modalStyle}>
-                    {
-                        (hasHeader ?? true) ? <section className={styles.modalHeader} style={style?.modalHeaderStyle}>
-                                {headerTitle != "" ? <h1 className={[styles.modalTitle, classNames?.modalTitleStyle].join(' ')} style={style?.modalTitleStyle}>{headerTitle}</h1> : ''}
-                                {(hasClosingButton ?? true) ?
-                                    <button className={[styles.modalCloseButton, isLight ? styles.modalButtonLight : '', classNames?.modalCloseButtonStyle].join(' ')}
-                                            type="button" onClick={close} style={style?.modalCloseButtonStyle}>
-                                        ✕
-                                    </button>
-                                    : ''
-                                }
-                            </section>
-                            : ''
-                    }
-                    { (headerTitle != "" || (hasClosingButton ?? true)) ?
-                        <hr className={[styles.headerSeparator, isLight ? styles.separatorLight : '', classNames?.modalSeparatorStyle].join(' ')} style={style?.modalSeparatorStyle}/>
-                        : ''
-                    }
+                    {(hasHeader ?? true) && <section className={styles.headerFixed}>
+                        <section className={styles.modalHeader} style={style?.modalHeaderStyle}>
+                            {headerTitle != "" ?
+                                <h1 className={[styles.modalTitle, classNames?.modalTitleStyle].join(' ')}
+                                    style={style?.modalTitleStyle}>{headerTitle}</h1> : ''}
+                            {(hasClosingButton ?? true) ?
+                                <button
+                                    className={[styles.modalCloseButton, isLight ? styles.modalButtonLight : '', classNames?.modalCloseButtonStyle].join(' ')}
+                                    type="button" onClick={close} style={style?.modalCloseButtonStyle}>
+                                    ✕
+                                </button>
+                                : ''
+                            }
+                        </section>
+                        <hr className={[styles.headerSeparator, isLight ? styles.separatorLight : '', classNames?.modalSeparatorStyle].join(' ')}
+                            style={style?.modalSeparatorStyle}/>
+                    </section>}
                     <section className={[styles.modalBody, classNames?.modalBodyStyle].join(' ')} style={style?.modalBodyStyle}>
                         {children ?? ''}
                     </section>

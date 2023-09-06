@@ -1,6 +1,7 @@
 {
     "MainComponent": {
-        "Hello": "Bienvenus dans le composant \"MainComponent\", il vous sert de base à appeler les autres sous composants. Vous pouvez ajouter et modifier des textes traduits dans les fichiers json, puis créer les interfaces nécessaires.."
+        "Hello": "Bienvenus dans le composant \"MainComponent\", il vous sert de base à appeler les autres sous composants. Vous pouvez ajouter et modifier des textes traduits dans les fichiers json, puis créer les interfaces nécessaires..",
+        "BackToMain": "Retourner à l'accueil"
     },
     "Test": {
         "Hello": "Le HTML du composant test"
@@ -10,6 +11,7 @@
             "Login": "Se connecter",
             "Register": "S'enregistrer",
             "Logout": "Déconnexion",
+            "UpdateProfile": "Modifier le profil",
             "LogoutHeader": "Souhaitez-vous vous déconnecter ?",
             "LoginInput": "Login ou Email",
             "PasswordInput": "Mot de passe",
@@ -20,7 +22,8 @@
             "LoginF": "Identifiant",
             "Pseudo": "Pseudo",
             "Email": "Email",
-            "RegexPassword": "Doit contenir : Une minuscule, une majuscule, un chiffre et un caractère spécial minimum pour une longueur totale de 8 minimum"
+            "RegexPassword": "Doit contenir : Une minuscule, une majuscule, un chiffre et un caractère spécial minimum pour une longueur totale de 8 minimum",
+            "Upload": "Ajouter une image de profil"
         }
     }
 }

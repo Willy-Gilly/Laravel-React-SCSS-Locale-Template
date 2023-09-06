@@ -4,17 +4,19 @@ $modalBorderMaxWidth:4px;
 .modalGlobal{
     --modalBorderDefaultWidth: $modalBorderDefaultWidth;
     --modalBorderMaxWidth:$modalBorderMaxWidth;
-    position: absolute;
-    top:0;
-    left:0;
-    width: 100vw;
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     background: radial-gradient(rgba(167, 167, 167, 0.4), rgba(50, 50, 50, 0.2));
     align-items: center;
     justify-content: center;
     animation-duration: 0.7s;
     transition: linear 0.2s;
+    z-index: 100 !important;
+
     &.animGlobal{
         animation-name: animateShade;
     }
@@ -25,9 +27,12 @@ $modalBorderMaxWidth:4px;
 
     .modal{
         opacity: 1 !important;
+        max-height: 95%;
+        max-width: 95%;
+        overflow-x: auto;
         width: fit-content;
         height: fit-content;
-        padding: 10px;
+        padding: 0 15px 15px 15px;
         background-color: rgb(64, 64, 64);
         animation-iteration-count: infinite;
         animation-direction: normal;
@@ -36,13 +41,25 @@ $modalBorderMaxWidth:4px;
         border: 5px solid rgb(42, 42, 42);
         border-radius: 20px;
         transition: 0.1ms linear;
-
+        z-index: 100 !important;
         &.animModal{
             animation-name: animateBorder;
         }
         &.modalLight{
             background-color: rgb(242,242,242);
             border-color: rgb(196, 196, 196);
+        }
+
+
+        .headerFixed{
+            width: 105%;
+            position: sticky;
+            top:0;
+            background-color: rgb(64, 64, 64,0.90);
+            backdrop-filter: blur(6px);
+            &.light{
+                background: rgba(242,242,242, 0.90);
+            }
         }
 
         //Modal Header
@@ -77,6 +94,7 @@ $modalBorderMaxWidth:4px;
         }
 
         .headerSeparator{
+            z-index: 100 !important;
             width: 100%;
             height: 1px;
             background-color: rgb(193,193,193);
@@ -88,10 +106,14 @@ $modalBorderMaxWidth:4px;
         }
 
         .modalTitle{
+            z-index: 100 !important;
             padding:0 10px;
         }
         .modalBody{
-            padding: 2px;
+            z-index: 100 !important;
+            padding: 10px;
+            width: 100%;
+            height: fit-content;
         }
     }
 

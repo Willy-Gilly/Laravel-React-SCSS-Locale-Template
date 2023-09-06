@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import React from "react";
 import {IThemeContext} from "../../../../context/ThemeContext";
 
@@ -9,6 +10,7 @@ export interface INavButtonProps{
     style?: INavButtonStyle;//Custom styles
     classNames?: INavButtonClassNames;//Custom classNames
     theme?: IThemeContext;//Define light or dark
+    icon?: IconProp;
 }
 export interface INavButtonStyle{
     button: React.CSSProperties;

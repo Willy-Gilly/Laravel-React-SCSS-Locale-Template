@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { CSSProperties } from "react";
 
 export interface ILinkProps{
@@ -6,6 +7,7 @@ export interface ILinkProps{
     disabled?: boolean;//Define if the Link should be disabled
     style?: ILinkStyle;//Custom styles
     classNames?: ILinkClassNames;//Custom classNames
+    icon?: IconProp;
 }
 
 export interface ILinkStyle{

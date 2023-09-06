@@ -7,12 +7,15 @@ import {IThemeContext, ThemeContext} from "../../../context/ThemeContext";
 import {Language} from "../../Controls/Code/ICode";
 import {useContext, useState } from 'react';
 import ExempleLayout, {SpanProperty, SpanTypeProperty, SpanObjectProperty} from "../ExempleLayout";
+import {LangContext} from "../../../context/LangContext";
 
 export default function TextBoxExemple():React.ReactElement {
     const [baseTextBoxValue, setBaseTextBoxValue] = useState('');
     const context = useContext(ThemeContext);
     const validEmail = /^([a-zA-Z0-9._\-]+@[a-zA-Z0-9._\-]+\.[a-zA-Z0-9]+)$/;
     const validPassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+    const langContext = useContext(LangContext);
+
     const children = (<>
         <div>
             <label>Base</label>
@@ -20,7 +23,7 @@ export default function TextBoxExemple():React.ReactElement {
         </div>
         <div>
             <label>Disabled</label>
-            <TextBox onChange={setBaseTextBoxValue} value={baseTextBoxValue} disabled={true}/>
+            <TextBox onChange={setBaseTextBoxValue} value={baseTextBoxValue} disabled={true} disabledContent={<span style={{color:"pink"}}>I'm disabled</span>}/>
         </div>
         <div>
             <label>Named field</label>

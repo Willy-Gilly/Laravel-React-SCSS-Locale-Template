@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseAPIController;
+use Illuminate\Http\File;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends BaseAPIController
@@ -79,5 +81,34 @@ class LoginController extends BaseAPIController
     public function getUser(Request $request): JsonResponse
     {
         return $this->sendResponse($request->user(),"Logged user returned!");
+    }
+
+    public function uploadProfilePicture(Request $request): JsonResponse
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation rules as needed
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('public/profile', $fileName); // Store the file in the 'public/profile' directory
+            // Update the user's profile_picture column with the file path
+            $user = auth()->user(); // Assuming you have authentication set up
+
+            if($user->profilePicture != null){
+                $previousProfilePicture = $user->profilePicture;
+                if(Storage::exists('profile/'.$previousProfilePicture)){
+                    Storage::delete('profile/'.$previousProfilePicture);
+                }
+            }
+
+            $user->profilePicture = $fileName;
+            $user->save();
+
+            return $this->sendResponse($fileName, 'Profile picture uploaded successfully');
+        }
+
+        return $this->sendError('File not found', ['File Not Found'], 400);
     }
 }

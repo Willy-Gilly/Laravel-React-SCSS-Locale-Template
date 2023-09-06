@@ -1,8 +1,8 @@
-import {Lang} from "./Lang";
+import { ReactElement } from "react";
 import {IThemeContext} from "../context/ThemeContext";
+import {IMainLangFile} from "../translation";
 
 export interface IMainComponentProps{
-    lang:Lang;
 }
 export interface IMainComponentStates{
     locale:string;
@@ -11,6 +11,8 @@ export interface IMainComponentStates{
     user:IProfile;
     page:Page;
     theme:IThemeContext|any;
+    strings:IMainLangFile;
+    navButtons:ReactElement[];
 }
 export interface IAuth {
     token:string;

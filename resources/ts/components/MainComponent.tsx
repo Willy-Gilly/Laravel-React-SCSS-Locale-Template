@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styles from "./MainComponent.module.scss";
 import {APIReturn, IAuth, IMainComponentProps, IMainComponentStates, Page, IProfile} from "./IMainComponent";
-import {IMainLangFile} from "./Lang";
 import axios from "axios";
 import Header from "./Header/Header";
 import ControlExample from "./ControlExample/ControlExample";
@@ -13,7 +12,12 @@ import {UserContext, UserContextT} from "../context/UserContext";
 import {AppContext, AppContextT} from "../context/AppContext";
 import {NavigationContext, NavigationContextT} from "../context/NavigationContext";
 import {LangContext, LangContextT} from "../context/LangContext";
-import {Profile} from "../Profile";
+import {Profile} from "../class/Profile";
+import en from "../../lang/en.json";
+import fr from "../../lang/fr.json";
+import {IMainLangFile} from "../translation";
+import Icon from "./Controls/Icon";
+import { faUser, faMoon, faSun, faBackward, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default class MainComponent extends React.Component<IMainComponentProps, IMainComponentStates> {
     public static contextType = ThemeContext;
@@ -28,11 +32,13 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         this.changePage = this.changePage.bind(this);
         this.APIGet = this.APIGet.bind(this);
         this.APIPost = this.APIPost.bind(this);
+        this.APIUpload = this.APIUpload.bind(this);
     }
 
     public componentDidMount() {
         this.rememberLogin();
-        this.rememberTheme(true)
+        this.rememberTheme(true);
+        this.setLanguage(this.state.locale);
     }
     private stateInitializer() {
         let themeC = this.getCookie<string>('theme');
@@ -43,7 +49,8 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             auth: false,
             locale: this.initLanguage(),
             page: Page.ControlExample,
-            theme: themeC != undefined || themeC != "undefined" ? themeC == "0" ? IThemeContext.Dark : IThemeContext.Light : IThemeContext.Dark
+            theme: themeC != undefined || themeC != "undefined" ? themeC == "0" ? IThemeContext.Dark : IThemeContext.Light : IThemeContext.Dark,
+            strings: fr, navButtons: undefined,
         };
     }
 
@@ -51,17 +58,15 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
 
     public render(): React.ReactElement {
         const {
-            locale, auth, user, page, theme, bearerToken
+            locale, auth, user, page, theme, bearerToken,strings,navButtons
         } = this.state;
-        const selectedLanguageFile: IMainLangFile = this.getLanguage();
-        const strings = selectedLanguageFile.MainComponent; //He is the only one to not have props strings since he is the one who handle it
 
-        let navButtons:React.ReactElement = undefined;
+        let navButtonsElement:React.ReactElement = undefined;
         let htmlRendered:React.ReactElement = undefined;
         switch (page){
             default: htmlRendered = (
                 <>
-                    <p>{strings.Hello}</p>
+                    <p>{strings.MainComponent.Hello}</p>
                     <Button onClick={() => this.changePage(Page.ControlExample)}>Control Example</Button>
                 </>
             );
@@ -71,24 +76,29 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
                     <ControlExample/>
                 </>
             );
-            navButtons = (<>
-                <NavButton onClick={() => this.changePage(Page.Main)}> Return to main page </NavButton>
-                <NavButton onClick={() => this.switchTheme()}> Switch to {theme == IThemeContext.Dark ? "Light" : "Dark"} theme </NavButton>
+
+            navButtonsElement = (<>
+                <NavButton onClick={() => this.changePage(Page.Main)}> <Icon icon={faArrowLeft}/> &nbsp; {strings.MainComponent.BackToMain} </NavButton>
+
+                {navButtons}
             </>);
             break;
         }
 
         const ApiContextValue:Api = {
-           get: this.APIGet, post: this.APIPost
+           get: this.APIGet, post: this.APIPost, upload: this.APIUpload
         };
+        const updateUser = (user:IProfile) => {
+            this.setState({user:user});
+        }
         const UserContextValue:UserContextT = {
-            bearerToken: bearerToken, user: user, isAuth: auth, login: this.login, logout: this.logout, register: this.register
+            bearerToken: bearerToken, user: user, isAuth: auth, login: this.login, logout: this.logout, register: this.register, updateUser
         }
         const NavigationContextValue:NavigationContextT = {
-            page:page, navigateTo: this.changePage
+            page:page, navigateTo: this.changePage, setNavElements:undefined, switchTheme: () => this.switchTheme()
         };
         const LangContextValue:LangContextT = {
-          strings: selectedLanguageFile, setLocale: this.setLanguage, availableLanguages: this.availableLanguages, locale: locale
+          strings: strings, setLocale: this.setLanguage, availableLanguages: this.availableLanguages, locale: locale
         };
         const AppContextValue:AppContextT = {
             api:ApiContextValue, user:UserContextValue, theme:theme, nav:NavigationContextValue, lang: LangContextValue
@@ -101,7 +111,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
                             <LangContext.Provider value={LangContextValue}>
                                 <AppContext.Provider value={AppContextValue}>
                                     <div className={styles.main}>
-                                        <Header fixed={true} children={navButtons}/>
+                                        <Header fixed={true} children={navButtonsElement}/>
                                         {htmlRendered}
                                     </div>
                                 </AppContext.Provider>
@@ -112,14 +122,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
             </ThemeContext.Provider>
         );
     }
-    private getLanguage(): IMainLangFile {
-        switch (this.state.locale) {
-            case 'en':
-                return this.props.lang.en as IMainLangFile
-            default:
-                return this.props.lang.fr as IMainLangFile
-        }
-    }
+
     public getCookie<T>(cookieName): T|string|undefined {
         if (document.cookie.indexOf(cookieName + '=') != -1) {
             try{
@@ -150,7 +153,9 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         }
     }
     public setLanguage(locale: string): void {
-        this.setState({locale: locale}, () => this.setCookie("currentLocale", this.state.locale, 360));
+        import(`../../lang/${locale}.json`).then((res:IMainLangFile) => {
+            this.setState({locale: locale,strings:res}, () => this.setCookie("currentLocale", this.state.locale, 360));
+        })
     }
     public rememberLogin():void {
         let token = this.getCookie<string>("bearerToken");
@@ -181,7 +186,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
 
     public login(emailOrLogin: string, password: string): void {
         const api:Api = {
-            get: this.APIGet, post: this.APIPost
+            get: this.APIGet, post: this.APIPost, upload: this.APIUpload
         };
         Profile.login(api,emailOrLogin, password).then(res => {
             this.setCookie("bearerToken", res.token, 30);
@@ -195,7 +200,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
     }
 
     public APIGet<T>(uri:string):Promise<T>{
-        return axios.get(uri, this.getAPIHeader()).then((response) => {
+        return axios.get('api/'+uri, this.getAPIHeader()).then((response) => {
             const res:APIReturn = response.data;
             if(!res || !res.success || !res.data){
                 throw new Error("Data returned seems invalid. Check Network response.");
@@ -208,7 +213,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         });
     }
     public APIPost<T>(uri:string, body:any):Promise<T>{
-        return axios.post(uri, body, this.getAPIHeader()).then((response) => {
+        return axios.post('api/'+uri, body, this.getAPIHeader()).then((response) => {
             const res:APIReturn = response.data;
             if(!res || !res.success || !res.data){
                 throw new Error("Data returned seems invalid. Check Network response.");
@@ -221,13 +226,29 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
         });
     }
 
-    public getAPIHeader() {
-        return {headers: {Authorization: `Bearer ` + this.state.bearerToken}};
+    public APIUpload<T>(uri:string,body:FormData):Promise<T>{
+        return axios.post('api/'+uri, body, this.getAPIHeader(true)).then((response) => {
+            const res:APIReturn = response.data;
+            if(!res || !res.success || !res.data){
+                throw new Error("Data returned seems invalid. Check Network response.");
+            }
+            console.info(res.message);
+            return res.data as T;
+        }).catch(e => {
+            console.error(`Couldn't catch a value for uri '${uri}'. Error Message : ${e.message}`);
+            return undefined;
+        });
+    }
+
+    public getAPIHeader(isUpload:boolean = false) {
+        let header = {headers: {Authorization: `Bearer ` + this.state.bearerToken}};
+        if(isUpload) header.headers['Content-type'] = 'multipart/form-data';
+        return header;
     }
 
     public logout():void {
         const api:Api = {
-            get: this.APIGet, post: this.APIPost
+            get: this.APIGet, post: this.APIPost, upload: this.APIUpload
         };
         Profile.logout(api).then(res => {
             if(res){
@@ -239,7 +260,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
 
     private getUser():void {
         const api:Api = {
-            get: this.APIGet, post: this.APIPost
+            get: this.APIGet, post: this.APIPost, upload: this.APIUpload
         };
         Profile.getUser(api).then(res => {
             if(!!res){
@@ -255,7 +276,7 @@ export default class MainComponent extends React.Component<IMainComponentProps, 
 
     public register(firstname:string,lastname:string,login:string,pseudo:string,email:string,password:string):void{
         const api:Api = {
-            get: this.APIGet, post: this.APIPost
+            get: this.APIGet, post: this.APIPost, upload: this.APIUpload
         };
         Profile.register(api,firstname, lastname, login, pseudo, email, password).then(auth => {
             this.setCookie("bearerToken", auth.token, 30);

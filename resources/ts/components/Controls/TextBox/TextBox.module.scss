@@ -11,7 +11,8 @@
     justify-content: center;
     border-width: 2px;
     border-color: #000000;
-    min-width: fit-content;
+    max-width: 100%;
+
     &:focus{
         outline: none;
         background-color: #1d1d1d;

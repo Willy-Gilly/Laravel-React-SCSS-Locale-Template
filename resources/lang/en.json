@@ -1,6 +1,7 @@
 {
     "MainComponent": {
-        "Hello": "Welcome to the \"MainComponent\" component, it serves as a basis for calling the other sub-components. You can add and edit translated texts in json files and then create necessary interfaces."
+        "Hello": "Welcome to the \"MainComponent\" component, it serves as a basis for calling the other sub-components. You can add and edit translated texts in json files and then create necessary interfaces.",
+        "BackToMain": "Return to main page"
     },
     "Test": {
         "Hello": "The HTML of the test component"
@@ -10,17 +11,19 @@
             "Login": "Login",
             "Register": "Register",
             "Logout": "Logout",
+            "UpdateProfile": "Update Profile",
             "LogoutHeader": "Would you like to disconnect ?",
             "LoginInput": "Login or Email",
             "PasswordInput": "Password",
             "Confirm": "Confirm",
             "Cancel": "Cancel",
-            "FirstName": "Prénom",
-            "LastName": "Nom",
-            "LoginF": "Identifiant",
+            "FirstName": "First Name",
+            "LastName": "Last Name",
+            "LoginF": "Login",
             "Pseudo": "Pseudo",
-            "Email": "Email",
-            "RegexPassword": "Must Contain : One lowercase, one uppercase, one number and one special character minimum for a total length of 8 minimum"
+            "Email": "E-mail",
+            "RegexPassword": "Must Contain : One lowercase, one uppercase, one number and one special character minimum for a total length of 8 minimum",
+            "Upload": "Upload a profile picture"
         }
     }
 }

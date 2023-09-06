@@ -1,5 +1,5 @@
 import React from "react";
-import {IMainLangFile} from "../components/Lang";
+import {IMainLangFile} from "../translation";
 
 export interface LangContextT {
     locale:string;

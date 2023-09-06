@@ -10,6 +10,7 @@ export interface INavStates{
     showingLoginModal:boolean;
     showingRegisterModal:boolean;
     showingConfirmationLogoutModal:boolean;
+    isUpdatingProfile:boolean;
 
     loginInput:string;
     passwordInput:string;
@@ -21,4 +22,24 @@ export interface INavStates{
     pseudoInput:string;
     emailRInput:string;
     passwordRInput:string;
+    picture:File;
+}
+
+export interface NavLang{
+    Login:string;
+    Register:string;
+    Logout:string;
+    UpdateProfile:string;
+    LogoutHeader:string;
+    LoginInput:string;
+    PasswordInput:string;
+    Confirm:string;
+    Cancel:string;
+    FirstName:string;
+    LastName:string;
+    LoginF:string;
+    Pseudo:string;
+    Email:string;
+    RegexPassword:string;
+    Upload:string;
 }

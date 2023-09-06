@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styles from './Nav.module.scss'
-import {INavProps, INavStates} from './INav';
+import styles from './Nav.module.scss';
+import {INavProps, INavStates, NavLang} from './INav';
 import LangOptions from "../../Controls/LangOptions/LangOptions";
 import Modal from "../../Controls/Modal/Modal";
 import Button from "../../Controls/Button/Button";
@@ -9,7 +9,13 @@ import NavButton from "./NavButton/NavButton";
 import TextBox from "../../Controls/TextBox/TextBox";
 import {IThemeContext} from "../../../context/ThemeContext";
 import {AppContext} from "../../../context/AppContext";
-import {NavLang} from "../IHeader";
+import Link from "../../Controls/Link/Link";
+import Upload from "../../Controls/Upload/Upload";
+import {Profile} from "../../../class/Profile";
+import Image from "../../Controls/Image/Image";
+import Icon from "../../Controls/Icon";
+import { faMoon } from '@fortawesome/free-regular-svg-icons';
+import { faSun, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export default class Nav extends React.Component<INavProps,INavStates> {
     public static contextType = AppContext;
@@ -31,7 +37,7 @@ export default class Nav extends React.Component<INavProps,INavStates> {
         this.handleLoginRChange = this.handleLoginRChange.bind(this);
         this.handlePseudoChange = this.handlePseudoChange.bind(this);
     }
-    private regexStringEmail:string = "^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$";
+    private regexStringEmail = /^([a-zA-Z0-9._\-]+@[a-zA-Z0-9._\-]+\.[a-zA-Z0-9]+)$/;
     private regexStringLogin:string = "^([a-zA-Z0-9-_]){3,20}$";//use the same for pseudo
     private regexStringPassword:string = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$";
     private regexStringNames:string = "^[a-zA-Zçéèêëàîïûü.\\- ]{2,}$"
@@ -41,36 +47,40 @@ export default class Nav extends React.Component<INavProps,INavStates> {
             showingLoginModal: false,
             showingRegisterModal: false,
             showingConfirmationLogoutModal: false,
+            isUpdatingProfile:false,
             passwordInput: '',
             loginInput: '',
             canRegister: false,
-            firstNameInput: "", lastNameInput:"", loginRInput:"", pseudoInput:"", emailRInput:"", passwordRInput:""
+            firstNameInput: "", lastNameInput:"", loginRInput:"", pseudoInput:"", emailRInput:"", passwordRInput:"",
+            picture:undefined,
         };
     }
     public render() : React.ReactElement {
         const {
             showingLoginModal, showingRegisterModal, showingConfirmationLogoutModal, loginInput, passwordInput, canRegister,
-            firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput
+            firstNameInput, lastNameInput, loginRInput, pseudoInput, emailRInput, passwordRInput,isUpdatingProfile, picture
         } = this.state;
         const {
             children, theme
         } = this.props;
         const strings:NavLang = this.context.lang.strings.Header.Nav;
         const userC = this.context.user;
-        const {login, logout, register, user, isAuth} = userC;
-
+        const api = this.context.api;
+        const {login, logout, register, user, isAuth, updateUser} = userC;
+        const currentTheme = (theme ?? this.context.theme);
         const buttonStyle:IButtonStyle = {button: {width: "70%", alignSelf:"center"}};
-        const navLight = (theme ?? this.context.theme) == IThemeContext.Light ? styles.navLight : '';
+        const navLight = currentTheme == IThemeContext.Light ? styles.navLight : '';
         return (<>
             <nav className={navLight}>
                 <div className={styles.left}>
                     <LangOptions/>
-                    {user ? <p>{user.pseudo}</p> : ''}
+                    {user ? <Link onClick={() => this.setState({isUpdatingProfile:true,showingRegisterModal:true})} icon={faUser}>{user.pseudo}</Link> : ''}
                 </div>
                 <div className={styles.middle}>
                     {children}
                 </div>
                 <div className={styles.right}>
+                    <NavButton onClick={() => this.context.nav.switchTheme()}> <Icon icon={currentTheme == IThemeContext.Light ? faMoon : faSun}/> &nbsp; Switch to {currentTheme == IThemeContext.Dark ? "Light" : "Dark"} theme </NavButton>
                     {
                         isAuth ? <NavButton onClick={this.logoutViewState}>{strings.Logout}</NavButton>
                             : <>
@@ -95,8 +105,26 @@ export default class Nav extends React.Component<INavProps,INavStates> {
                     } : () => this.loginViewState()} style={buttonStyle}> {strings.Confirm} </Button>
                 </div>
             </Modal>
-            <Modal close={this.registerViewState} showing={showingRegisterModal && !isAuth} headerTitle={strings.Register} hasClosingButton={false}>
+            <Modal close={this.registerViewState} showing={(showingRegisterModal && !isAuth) || (showingRegisterModal && isAuth && isUpdatingProfile)} headerTitle={isUpdatingProfile ? strings.UpdateProfile : strings.Register} hasClosingButton={false}
+
+            >
                 <div className={styles.modalLoginContainer}>
+                    {isAuth && !!user && <div>
+                        {!!user?.profilePicture && <Image src={"/storage/profile/" + user.profilePicture} alt={"Profile Picture of User "+user.pseudo} />}
+                        <Upload accept={"image/*"} onFileChange={(file) => this.setState({picture: file as File})}/>
+                        <Button onClick={() => {
+                            let formData = new FormData();
+                            formData.append("profile_picture", picture);
+                            Profile.uploadProfilePic(api, formData).then((res) => {
+                               if(!!res){
+                                   user.profilePicture = res;
+                                   updateUser(user);
+                               }
+                            });
+                        }} display={IButtonDisplay.Warning} disabled={!picture}>
+                            <p style={{margin:0}}>{strings.Upload}</p>
+                        </Button>
+                    </div>}
                     <div>
                         <label>{strings.FirstName}</label>
                         <TextBox onChange={this.handleFirstNameChange} value={firstNameInput} name={"firstname"} required={true} regex={this.regexStringNames} placeholder={strings.FirstName}/>
@@ -177,13 +205,13 @@ export default class Nav extends React.Component<INavProps,INavStates> {
     //endregion register
     //region modalOpen
     public logoutViewState():void{
-        this.setState({showingConfirmationLogoutModal: !this.state.showingConfirmationLogoutModal, showingLoginModal:false,showingRegisterModal: false});
+        this.setState({showingConfirmationLogoutModal: !this.state.showingConfirmationLogoutModal, showingLoginModal:false,showingRegisterModal: false,isUpdatingProfile:false});
     }
     public loginViewState():void{
-        this.setState({showingLoginModal: !this.state.showingLoginModal, showingRegisterModal:false, showingConfirmationLogoutModal: false});
+        this.setState({showingLoginModal: !this.state.showingLoginModal, showingRegisterModal:false, showingConfirmationLogoutModal: false,isUpdatingProfile:false});
     }
     public registerViewState():void{
-        this.setState({showingRegisterModal: !this.state.showingRegisterModal, showingConfirmationLogoutModal: false, showingLoginModal:false});
+        this.setState({showingRegisterModal: !this.state.showingRegisterModal, showingConfirmationLogoutModal: false, showingLoginModal:false,isUpdatingProfile:false});
     }
     //endregion modalOpen
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties, ReactElement } from "react";
 import {IThemeContext} from "../../../context/ThemeContext";
 
 export interface ITextBoxProps{
@@ -16,9 +16,10 @@ export interface ITextBoxProps{
     placeholder?:string;//Display a placeholder
     onKeyPress?: (event:React.KeyboardEvent) => void;
     required?: boolean;//Define if Required
+    disabledContent?:ReactElement|ReactElement[];
 }
 export interface ITextBoxStyle{
-    textBox: React.CSSProperties;
+    textBox: CSSProperties;
 }
 export interface ITextBoxClassNames{
     textBox: string;
